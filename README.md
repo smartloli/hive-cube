@@ -1,4 +1,4 @@
-# Kafka Eagle
+# Hive Cube
 
 This is an monitor system and monitor your kafka clusters, and visual consumer thread,offsets,owners etc.
 
@@ -25,13 +25,9 @@ Kafka is designed to be flexible on how the offsets are managed. Consumer can ch
   
 Each runtime instance of Kafka Eagle can only support a single type of storage format.
 
-# Kafka SQL
-
-Use the SQL statement to query the topic message log, and visualize the results, you can read [Kafka SQL](https://ke.smartloli.org/3.Manuals/9.KafkaSQL.html) to view the syntax.
-
 # Quickstart
 
-Please read [Kafka Eagle Install](https://ke.smartloli.org/2.Install/2.Installing.html) for setting up and running Kafka Eagle.
+Please read [Hive Cube Install](https://ke.smartloli.org/2.Install/2.Installing.html) for setting up and running Hive Cube.
 
 # Deploy
 
@@ -41,7 +37,7 @@ mvn clean && mvn package
 ```
 # More Information
 
-Please see the [Kafka Eagle Manual](https://ke.smartloli.org) for for more information including:
+Please see the [Hive Cube Manual](https://ke.smartloli.org) for for more information including:
   * System environment settings and installation instructions.
   * Information about how to use script command.
   * Visual group,topic,offset metadata information etc.
@@ -49,7 +45,7 @@ Please see the [Kafka Eagle Manual](https://ke.smartloli.org) for for more infor
  
 # Contributing
 
-The Kafka Eagle is released under the Apache License and we welcome any contributions within this license. Any pull request is welcome and will be reviewed and merged as quickly as possible.
+The Hive Cube is released under the Apache License and we welcome any contributions within this license. Any pull request is welcome and will be reviewed and merged as quickly as possible.
 
 Since this is an open source tool, please comply with the relevant laws and regulations, the use of civilization.
 
@@ -60,4 +56,3 @@ Thanks to the following members for maintaining the project.
 |Alias |Github |Email |
 |:-- |:-- |:-- |
 |smartloli|[smartloli](https://github.com/smartloli)|smartloli.org@gmail.com|
-|hexiang|[hexian55](https://github.com/hexian55)|hexiang55@gmail.com|

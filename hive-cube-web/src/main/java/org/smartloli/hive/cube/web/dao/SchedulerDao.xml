@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.SchedulerDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.Scheduler"
+		id="scheduler">
+		<result property="taskId" column="task_id" />
+		<result property="cronExpression" column="cron_expression" />
+		<result property="taskSwitch" column="task_switch" />
+	</resultMap>
+
+	<insert id="updateScheduler" parameterType="org.smartloli.hive.cube.common.pojo.Scheduler">
+		replace into
+		scheduler(task_id,cron_expression,task_switch)
+		value(#{taskId},#{cronExpression},#{taskSwitch})
+	</insert>
+
+	<select id="getSchedulerByTaskId" parameterType="int" resultMap="scheduler">
+		select * from scheduler where task_id=#{id}
+	</select>
+
+	<delete id="deleteSchedulerById" parameterType="int">
+		delete from
+		scheduler where task_id=#{id}
+	</delete>
+
+</mapper>

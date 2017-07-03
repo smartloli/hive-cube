@@ -32,35 +32,43 @@ public class CommonClientConfigs {
 	/** Export task path. */
 	public static final String ASSERT_HC_EXPORT_CONFIG = "/assert/hc/export";
 
+	/** Login constant property. */
 	public interface Login {
 		public static final String SESSION_USER = "LOGIN_USER_SESSION";
 		public static final String UNKNOW_USER = "__unknow__";
 		public static final String ERROR_LOGIN = "error_msg";
+		public static final String REQST_URI = "/account/signin/action";
+		public static final String REDIRECT = "/hc/account/signin?";
 	}
 
+	/** Task constant property. */
 	public interface Task {
 		public static final int MAX_SIZE_LIMIT = 5;
 		public static final int TASK_COMMON = 1;
 		public static final int WAIT = 1000 * 3;
+		public static final int LISTEN = 1000 * 2;
 		public static final int TASK_VIP = 5;
-		public static final String NEW_TASK_NUMBER = "dashboard.task.numbers";
+		public static final String NEW_TASK_NUMBER = "Numbers";
 		public static final String PERIOD = "period";
 	}
 
+	/** Task status constant property. */
 	public interface TaskStatus {
-		public static final String NOT_EXECUTED = "task.unexecuted";
-		public static final String EXECUTING = "task.running";
-		public static final String QUEUE = "task.queue";
-		public static final String EXECUTION_ERROR = "task.error";
-		public static final String EXECUTION_END = "task.finished";
-		public static final String EXECUTION_STOP = "task.stop";
+		public static final String NOT_EXECUTED = "Unexecuted";
+		public static final String EXECUTING = "Running";
+		public static final String QUEUE = "Queue";
+		public static final String EXECUTION_ERROR = "Error";
+		public static final String EXECUTION_END = "Finished";
+		public static final String EXECUTION_STOP = "Stop";
 	}
 
+	/** Task type constant property. */
 	public interface TaskType {
 		public static final int MANUAL = 0;
 		public static final int AUTO = 1;
 	}
 
+	/** Scheduler constant property. */
 	public interface Scheduler {
 		public static final String NAME = "schedule";
 		public static final String ADD = "add";
@@ -71,6 +79,7 @@ public class CommonClientConfigs {
 		public static final String CANCLE = "cancle";
 	}
 
+	/** Sql constant property. */
 	public interface Sql {
 		public final static String SELECT = "select";
 	}

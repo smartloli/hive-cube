@@ -42,15 +42,16 @@ import org.smartloli.hive.cube.common.pojo.Task;
  *         Created by Sep 26, 2016
  */
 public class YarnManager {
+	
 	private final static Logger LOG = LoggerFactory.getLogger(YarnManager.class);
 	private final static Configuration conf = new Configuration();
 	static {
 		try {
 			conf.setBoolean("mapreduce.app-submission.cross-platform", true);
-			conf.set("fs.defaultFS", SystemConfig.getProperty("mf.hdfs.uri"));
+			conf.set("fs.defaultFS", SystemConfig.getProperty("hive.cube.hdfs.uri"));
 			conf.set("mapreduce.framework.name", "yarn");
-			conf.set("yarn.resourcemanager.address", SystemConfig.getProperty("mf.yarn.rm.uri"));
-			conf.set("yarn.resourcemanager.scheduler.address", SystemConfig.getProperty("mf.yarn.scheduler.uri"));
+			conf.set("yarn.resourcemanager.address", SystemConfig.getProperty("hive.cube.yarn.rm.uri"));
+			conf.set("yarn.resourcemanager.scheduler.address", SystemConfig.getProperty("hive.cube.yarn.scheduler.uri"));
 		} catch (Exception ex) {
 			LOG.error("Initialize yarn uri address has error,msg is " + ex.getMessage());
 		}

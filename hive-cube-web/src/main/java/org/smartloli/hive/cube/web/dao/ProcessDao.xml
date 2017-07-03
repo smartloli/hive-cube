@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.ProcessDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.TaskProcess"
+		id="process">
+		<result property="taskId" column="task_id" />
+		<result property="appId" column="app_id" />
+		<result property="log" column="log" />
+	</resultMap>
+
+	<insert id="updateTaskProcess" parameterType="org.smartloli.hive.cube.common.pojo.TaskProcess">
+		replace into
+		process(task_id,app_id,`log`) value(#{taskId},#{appId},#{log})
+	</insert>
+
+</mapper>

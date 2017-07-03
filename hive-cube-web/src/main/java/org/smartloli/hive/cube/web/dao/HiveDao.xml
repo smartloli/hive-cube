@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.HiveDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.HiveTable"
+		id="hiveTable">
+		<result property="tableNameEn" column="table_name_en" />
+		<result property="tableNameZh" column="table_name_zh" />
+		<result property="tableColumnsZh" column="columns_zh" />
+	</resultMap>
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.HiveSyncStatus"
+		id="hiveSync">
+		<result property="tableName" column="tablename" />
+		<result property="aliasName" column="aliasname" />
+		<result property="code" column="code" />
+		<result property="time" column="update_time" />
+	</resultMap>
+
+	<select id="findTableByTableName" parameterType="string"
+		resultType="int">
+		select count(*)
+		from hive_table where
+		table_name_en=#{tableName}
+	</select>
+
+	<insert id="replaceIntoTable" parameterType="org.smartloli.hive.cube.common.pojo.HiveTable">
+		replace into
+		hive_table value(#{tableNameEn},#{tableNameZh},#{tableColumnsZh})
+	</insert>
+
+	<insert id="replaceIntoSyncTable" parameterType="org.smartloli.hive.cube.common.pojo.HiveSyncStatus">
+		replace into
+		hive_sync_status value(#{tableName},#{aliasName},#{code},now())
+	</insert>
+
+	<select id="getHiveTableColumnByName" parameterType="string"
+		resultMap="hiveTable">
+		select * from hive_table where table_name_en=#{tableName}
+	</select>
+
+	<select id="getHiveSyncStatus" parameterType="map" resultMap="hiveSync">
+		select * from hive_sync_status
+		<where>
+			<if test="search!=null and search!=''">
+				tablename like #{search} or aliasname like #{search}
+			</if>
+		</where>
+		limit #{start},#{size}
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from hive_table
+	</select>
+
+</mapper>

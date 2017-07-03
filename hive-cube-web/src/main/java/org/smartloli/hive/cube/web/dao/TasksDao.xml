@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.TasksDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.Task"
+		id="task">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="owner" column="owner" />
+		<result property="status" column="status" />
+		<result property="log" column="log" />
+		<result property="result" column="result" />
+		<result property="fileSize" column="fileSize" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="download" column="download" />
+		<result property="email" column="email" />
+		<result property="createTime" column="create_time" />
+		<result property="isAuto" column="is_auto" />
+		<result property="content" column="content" />
+		<result property="parentId" column="parent_id" />
+		<result property="rank" column="rank" />
+	</resultMap>
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.SchedulerTask"
+		id="autoTask">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="owner" column="owner" />
+		<result property="status" column="status" />
+		<result property="log" column="log" />
+		<result property="result" column="result" />
+		<result property="fileSize" column="fileSize" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="download" column="download" />
+		<result property="email" column="email" />
+		<result property="createTime" column="create_time" />
+		<result property="isAuto" column="is_auto" />
+		<result property="content" column="content" />
+		<result property="parentId" column="parent_id" />
+		<result property="rank" column="rank" />
+		<result property="cronExpression" column="cron_expression" />
+	</resultMap>
+
+	<select id="count" parameterType="map" resultType="int">
+		select count(*) from tasks
+		<where>
+			<if test="owner!=null and owner!=''">
+				owner=#{owner}
+			</if>
+			and is_auto=#{is_auto}
+		</where>
+	</select>
+
+	<select id="getTasks" parameterType="map" resultMap="task">
+		select *
+		from tasks
+		<where>
+			<if test="search!=null and search!=''">
+				(id like #{search} or name like #{search} or owner like
+				#{search} or status like #{search})
+			</if>
+			and is_auto=#{auto}
+		</where>
+		order by start_time desc
+		limit #{start},#{size}
+	</select>
+
+	<select id="getPrivateTasks" parameterType="map" resultMap="task">
+		select *
+		from tasks
+		<where>
+			<if test="search!=null and search!=''">
+				(id like #{search} or name like #{search})
+			</if>
+			and owner=#{owner} and is_auto=#{auto}
+		</where>
+		order by start_time desc
+		limit #{start},#{size}
+	</select>
+
+	<select id="loadRunningTask" resultMap="task">
+		select * from tasks
+		where
+		status='Unexecuted' or status like 'Queue%' or
+		status='Running' and
+		is_auto=0
+		order by start_time asc
+	</select>
+
+	<select id="loadAutoTask" resultMap="autoTask">
+		select a.*,b.cron_expression
+		as cron_expression from tasks
+		a,scheduler b where a.id=b.task_id
+		and
+		a.is_auto=1 and
+		b.task_switch=0
+	</select>
+
+	<select id="findTaskById" parameterType="int" resultMap="task">
+		select
+		*
+		from tasks where id=#{id}
+	</select>
+
+
+	<insert id="batchModifyTaskStatus" useGeneratedKeys="true"
+		parameterType="java.util.List">
+		<selectKey resultType="long" keyProperty="id" order="AFTER">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+		replace into tasks
+		(id,name,owner,status,log,result,fileSize,start_time,end_time,download,email,create_time,is_auto,content,parent_id,rank)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.id},#{item.name},#{item.owner},#{item.status},#{item.log},#{item.result},#{item.fileSize},#{item.startTime},#{item.endTime},#{item.download},#{item.email},#{item.createTime},#{item.isAuto},#{item.content},#{item.parentId},#{item.rank})
+		</foreach>
+	</insert>
+
+	<update id="modifyTaskContentByParams" parameterType="map">
+		update
+		mf_tasks
+		set content=#{content},`name`=#{name},email=#{email} where
+		`id`=#{id}
+	</update>
+
+	<update id="convertOrCancleAutoTask" parameterType="map">
+		update
+		tasks
+		set is_auto=#{auto} where id=#{id}
+	</update>
+
+	<update id="stopTaskById" parameterType="int">
+		update
+		tasks
+		set
+		`status`='Stop' where id=#{id}
+	</update>
+
+	<delete id="deleteTaskById" parameterType="int">
+		delete from tasks
+		where id=#{id}
+	</delete>
+
+	<delete id="removeProcessById" parameterType="int">
+		delete from
+		process
+		where task_id=#{id}
+	</delete>
+
+	<select id="getAppIdByTaskId" parameterType="int" resultType="string">
+		select app_id from process where task_id=#{id}
+	</select>
+
+	<select id="getTaskLogById" parameterType="int" resultType="string">
+		select `log` from process where task_id=#{id}
+	</select>
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.DashboardDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.Dashboard"
+		id="dashboard">
+		<result property="finished" column="finished" />
+		<result property="running" column="running" />
+		<result property="queue" column="queue" />
+		<result property="failed" column="failed" />
+	</resultMap>
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.D3" id="chart">
+		<result property="hour" column="hour" />
+		<result property="size" column="size" />
+	</resultMap>
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.Task"
+		id="task">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="owner" column="owner" />
+		<result property="status" column="status" />
+		<result property="log" column="log" />
+		<result property="result" column="result" />
+		<result property="fileSize" column="fileSize" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="download" column="download" />
+		<result property="email" column="email" />
+		<result property="createTime" column="create_time" />
+		<result property="isAuto" column="is_auto" />
+		<result property="content" column="content" />
+		<result property="parentId" column="parent_id" />
+		<result property="rank" column="rank" />
+	</resultMap>
+
+	<select id="panel" resultMap="dashboard">
+		select
+		count(case when status =
+		'Finished' then 1 else null end) as `finished`,
+		count(case when status
+		=
+		'Running' then 1 else null end) as `running`,
+		count(case when status =
+		'Queue'
+		then 1 else null end) as `queue`,
+		count(case when status =
+		'Error'
+		then 1
+		else null end) as `failed` from tasks;
+	</select>
+
+	<select id="chart" resultMap="chart">
+		select
+		date_format(create_time,'%Y-%m-%d %H:00') as `hour`,count(*) as size
+		from tasks where
+		date_format(create_time,'%Y%m%d')=date_format(now(),'%Y%m%d')
+		group by
+		date_format(create_time,'%H')
+	</select>
+
+	<select id="lastest10" resultMap="task">
+		select * from tasks order by
+		start_time desc limit 10
+	</select>
+
+</mapper>

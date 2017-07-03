@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.RowkeyDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.Rowkey"
+		id="rowkey">
+		<result property="tname" column="tname" />
+		<result property="regular" column="regular" />
+		<result property="author" column="author" />
+		<result property="tm" column="tm" />
+	</resultMap>
+
+	<insert id="replace" parameterType="org.smartloli.hive.cube.common.pojo.Task">
+		replace into
+		rowkey(tname,regular,author) value(#{tname},#{regular},#{author})
+	</insert>
+
+	<delete id="deleteRowkeyByName" parameterType="string">
+		delete from
+		rowkey
+		where tname=#{tname}
+	</delete>
+
+	<select id="getRowkeys" parameterType="map" resultMap="rowkey">
+		select * from rowkey
+		<where>
+			<if test="search!=null and search!=''">
+				tname like #{search}
+			</if>
+		</where>
+		order by tm desc limit #{start},#{size}
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from rowkey
+	</select>
+
+	<select id="findRowkeyByName" parameterType="String" resultMap="rowkey">
+		select * from
+		rowkey where tname=#{tname}
+	</select>
+
+</mapper>
