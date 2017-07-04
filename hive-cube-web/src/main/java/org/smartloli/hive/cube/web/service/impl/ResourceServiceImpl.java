@@ -65,6 +65,7 @@ public class ResourceServiceImpl implements ResourceService {
 		for (Integer roleId : roleIds) {
 			resourceIds.addAll(resDao.findResourceIdByRole(roleId));
 		}
+
 		// Duplicate removal
 		Set<Integer> onlyResourceIds = new HashSet<>();
 		for (Integer resource : resourceIds) {
@@ -102,7 +103,7 @@ public class ResourceServiceImpl implements ResourceService {
 
 		JSONObject target = new JSONObject();
 		JSONArray targets = new JSONArray();
-		target.put("name", "主目录");
+		target.put("name", "Root");
 		for (Entry<String, List<String>> entry : map.entrySet()) {
 			JSONObject subTarget = new JSONObject();
 			JSONArray subTargets = new JSONArray();

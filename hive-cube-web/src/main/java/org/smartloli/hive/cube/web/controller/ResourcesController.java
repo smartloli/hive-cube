@@ -73,8 +73,8 @@ public class ResourcesController {
 	/** Add root menu. */
 	@RequestMapping(value = "/resource/add/home/", method = RequestMethod.POST)
 	public String addHome(HttpSession session, HttpServletRequest request) {
-		String name = request.getParameter("mf_resource_home_name");
-		String url = request.getParameter("mf_resource_home_url");
+		String name = request.getParameter("hc_resource_home_name");
+		String url = request.getParameter("hc_resource_home_url");
 		Map<String, Object> map = new HashMap<>();
 		map.put("name", name);
 		map.put("url", url);
@@ -87,8 +87,8 @@ public class ResourcesController {
 	/** Add children menu. */
 	@RequestMapping(value = "/resource/add/children/", method = RequestMethod.POST)
 	public String addChildren(HttpSession session, HttpServletRequest request) {
-		String name = request.getParameter("mf_resource_child_name");
-		String url = request.getParameter("mf_resource_child_url");
+		String name = request.getParameter("hc_resource_child_name");
+		String url = request.getParameter("hc_resource_child_url");
 		String parentId = request.getParameter("res_parent_id");
 		Map<String, Object> map = new HashMap<>();
 		map.put("name", name);

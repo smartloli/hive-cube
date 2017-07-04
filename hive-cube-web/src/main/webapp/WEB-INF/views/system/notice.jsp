@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><spring:message code="system.notice.title"></spring:message></title>
+<title>Notice - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 
@@ -25,8 +25,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<spring:message code="system.notice.content"></spring:message>
-						<small><spring:message code="system.notice.content.small"></spring:message></small>
+						System Notice <small>overview</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -37,8 +36,9 @@
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
-						<i class="fa fa-info-circle"></i> <strong><spring:message
-								code="system.notice.head.describer"></spring:message></strong>
+						<i class="fa fa-info-circle"></i> <strong>Send a system
+							announcement to notify the online user of that day about the
+							emergency.</strong>
 					</div>
 				</div>
 			</div>
@@ -47,20 +47,24 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-cogs fa-fw"></i>
-							<spring:message code="system.notice.content.edit"></spring:message>
+							<i class="fa fa-cogs fa-fw"></i> Edit
 							<div class="pull-right"></div>
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<form role="form" action="#" method="post"
+							<form role="form" action="/hc/system/send/notice/" method="post"
 								onsubmit="return contextFormValid();return false;">
 								<div class="form-group">
-									<label>公告内容</label>
-									<textarea id="mf_notice_content" name="mf_notice_content"
-										class="form-control" placeholder="限制120个字" rows="3" maxlength="120"></textarea>
+									<label>Content</label>
+									<textarea id="hc_notice_content" name="hc_notice_content"
+										class="form-control" placeholder="write notice content"
+										rows="10"></textarea>
 								</div>
-								<button type="submit" class="btn btn-primary" id="create-btn">发送
+								<div id="alert_mssage_notice" style="display: none"
+									class="alert alert-danger">
+									<label> Oops! Send message can not null .</label>
+								</div>
+								<button type="submit" class="btn btn-primary" id="create-btn">Send
 								</button>
 							</form>
 						</div>
@@ -76,4 +80,18 @@
 <jsp:include page="../public/script.jsp">
 	<jsp:param value="main/system/notice.js" name="loader" />
 </jsp:include>
+<script type="text/javascript">
+	function contextFormValid() {
+		var hc_notice_content = $("#hc_notice_content").val();
+		if (hc_notice_content.length == 0) {
+			$("#alert_mssage_notice").show();
+			setTimeout(function() {
+				$("#alert_mssage_notice").hide()
+			}, 3000);
+			return false;
+		}
+
+		return true;
+	}
+</script>
 </html>

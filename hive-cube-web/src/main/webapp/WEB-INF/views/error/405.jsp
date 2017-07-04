@@ -6,7 +6,7 @@
 <html lang="zh">
 
 <head>
-<title>405 - MF</title>
+<title>405 - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 <div class="container">
@@ -21,7 +21,7 @@
 						<fieldset>
 							<h1 class="form-signin-heading">Method is not allowed ~~</h1>
 							<!-- Change this to a button or input when using this as a form -->
-							<a href="/mf" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
+							<a href="/hc" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
 						</fieldset>
 					</form>
 				</div>

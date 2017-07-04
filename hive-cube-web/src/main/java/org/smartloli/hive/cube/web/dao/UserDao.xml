@@ -49,4 +49,24 @@
 		value(#{rtxno},#{username},#{password},#{email},#{realname})
 	</insert>
 
+	<delete id="delete" parameterType="org.smartloli.hive.cube.common.pojo.Signiner">
+		delete from users where
+		id=#{id}
+	</delete>
+
+	<update id="modify" parameterType="org.smartloli.hive.cube.common.pojo.Signiner">
+		update users set
+		username=#{username},realname=#{realname},rtxno=#{rtxno} where
+		id=#{id}
+	</update>
+
+	<select id="findUserById" parameterType="Integer" resultMap="signin">
+		select * from users where id=#{id}
+	</select>
+
+	<select id="getUserEmails" resultMap="signin">
+		select email from users
+		where username !='admin'
+	</select>
+
 </mapper>

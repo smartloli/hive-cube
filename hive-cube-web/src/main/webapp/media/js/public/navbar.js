@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	var url = window.location.href;
-	var ret = url.split("mf")[1];
+	var ret = url.split("hc")[1];
 	if (ret.indexOf("/tasks") > -1) {
 		$("#demo2").addClass('collapse in');
 		$("#demo2").attr("aria-expanded", true);
@@ -21,8 +21,8 @@ $(document).ready(function() {
 		$("#demo3").attr("aria-expanded", true);
 	}
 
-	$(document).on('click', 'a[name=mf_account_reset]', function() {
-		$('#mf_account_reset_dialog').modal('show');
+	$(document).on('click', 'a[name=hc_account_reset]', function() {
+		$('#hc_account_reset_dialog').modal('show');
 		$(".modal-backdrop").css({
 			"z-index": "999"
 		});

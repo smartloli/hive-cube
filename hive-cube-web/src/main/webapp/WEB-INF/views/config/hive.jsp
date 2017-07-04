@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><spring:message code="config.hive.title"></spring:message></title>
+<title>Hive - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 <jsp:include page="../public/tcss.jsp"></jsp:include>
 </head>
@@ -26,8 +26,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<spring:message code="config.hive.content"></spring:message>
-						<small><spring:message code="config.hive.content.small"></spring:message></small>
+						Hive <small>overview</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -38,8 +37,9 @@
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
-						<i class="fa fa-info-circle"></i> <strong><spring:message
-								code="config.hive.head.describer"></spring:message></strong>
+						<i class="fa fa-info-circle"></i> <strong>Administrators
+							can edit the Hive table structure in the admin interface, modify
+							the field notes and other operations.</strong>
 					</div>
 				</div>
 			</div>
@@ -48,11 +48,10 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-table fa-fw"></i>
-							<spring:message code="config.hive.content.edit"></spring:message>
+							<i class="fa fa-table fa-fw"></i> Content Edit
 							<div class="pull-right">
-								<a href="/mf/config/hive/sync/all/"
-									class="btn btn-primary btn-xs">同步所有</a>
+								<a href="/hc/config/hive/sync/all/"
+									class="btn btn-primary btn-xs">Sync-All</a>
 							</div>
 						</div>
 						<!-- /.panel-heading -->
@@ -61,11 +60,11 @@
 								width="100%">
 								<thead>
 									<tr>
-										<th>表名</th>
-										<th>别名</th>
-										<th>状态</th>
-										<th>同步时间</th>
-										<th>操作</th>
+										<th>Table</th>
+										<th>Alias</th>
+										<th>Status</th>
+										<th>Modify</th>
+										<th>Operate</th>
 									</tr>
 								</thead>
 							</table>
@@ -76,40 +75,39 @@
 				<!-- /.row -->
 			</div>
 			<!-- modal -->
-			<div class="modal fade" aria-labelledby="mfModalLabelDelete"
-				aria-hidden="true" id="mf_edit_dialog" tabindex="-1" role="dialog">
+			<div class="modal fade" aria-labelledby="hcModalLabelDelete"
+				aria-hidden="true" id="hc_edit_dialog" tabindex="-1" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
-							<h4 class="modal-title" id="mfModalLabelDelete">
-								<spring:message code="system.resource.btn.delete"></spring:message>
-							</h4>
+							<h4 class="modal-title" id="hcModalLabelDelete">Modify Table
+								Alias</h4>
 						</div>
 						<!-- /.row -->
-						<form role="form" action="/mf/config/hive/sync/one/" method="post"
+						<form role="form" action="/hc/config/hive/sync/one/" method="post"
 							onsubmit="return contextFormValid();return false;">
 							<div class="modal-body">
 								<fieldset class="form-horizontal">
 									<div class="form-group">
-										<label for="path" class="col-sm-2 control-label"><spring:message
-												code="config.hive.alias.edit"></spring:message></label>
+										<label for="path" class="col-sm-2 control-label">Alias</label>
 										<div class="col-sm-10">
-											<input id="mf_alias_hive_table" name="mf_alias_hive_table"
-												class="form-control" placeholder="表别名"> <input
-												id="mf_name_hive_table" name="mf_name_hive_table" type="hidden">
+											<input id="hc_alias_hive_table" name="hc_alias_hive_table"
+												class="form-control" placeholder="alias"> <input
+												id="hc_name_hive_table" name="hc_name_hive_table"
+												type="hidden">
 										</div>
 									</div>
 									<div id="alert_edit_mssage" style="display: none"
 										class="alert alert-danger">
-										<label> 修改的别名不能为空 .</label>
+										<label> Modify alias can not null .</label>
 									</div>
 								</fieldset>
 							</div>
 							<div id="remove_div" class="modal-footer">
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">取消</button>
-								<button type="submit" class="btn btn-primary" id="create-btn">确定
+									data-dismiss="modal">Cancle</button>
+								<button type="submit" class="btn btn-primary" id="create-btn">Submit
 								</button>
 							</div>
 						</form>
@@ -126,8 +124,8 @@
 <jsp:include page="../public/tscript.jsp"></jsp:include>
 <script type="text/javascript">
 	function contextFormValid() {
-		var mf_alias_hive_table = $("#mf_alias_hive_table").val();
-		if (mf_alias_hive_table.length == 0) {
+		var hc_alias_hive_table = $("#hc_alias_hive_table").val();
+		if (hc_alias_hive_table.length == 0) {
 			$("#alert_edit_mssage").show();
 			setTimeout(function() {
 				$("#alert_edit_mssage").hide()

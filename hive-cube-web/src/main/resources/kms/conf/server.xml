@@ -115,7 +115,7 @@
 				<Valve className="org.apache.catalina.valves.AccessLogValve"
 					directory="logs" prefix="localhost_access_log" suffix=".txt"
 					pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-				<Context path="/assert/mf/export" docBase="/data/soft/workspace/export/" />
+				<Context path="/assert/hc/export" docBase="/data/soft/workspace/export/" />
 			</Host>
 		</Engine>
 	</Service>

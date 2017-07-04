@@ -6,7 +6,7 @@ $(document).ready(function() {
 		"bProcessing" : true,
 		"bServerSide" : true,
 		"fnServerData" : retrieveData,
-		"sAjaxSource" : "/mf/system/user/role/table/ajax",
+		"sAjaxSource" : "/hc/system/user/role/table/ajax",
 		"aoColumns" : [ {
 			"mData" : 'rtxno'
 		}, {
@@ -35,27 +35,46 @@ $(document).ready(function() {
 		});
 	}
 
-	$("#mf-add-user-btn").click(function() {
-		$('#mf_user_add_dialog').modal('show');
+	$("#hc-add-user-btn").click(function() {
+		$('#hc_user_add_dialog').modal('show');
+	});
+	
+	$(document).on('click', 'a[name=operater_modify_modal]', function() {
+		$('#hc_user_modify_dialog').modal('show');
+		var href = $(this).attr("href");
+		var id = href.split("#")[1];
+		$.ajax({
+			type : 'get',
+			dataType : 'json',
+			url : '/hc/system/user/signin/' + id + '/ajax',
+			success : function(datas) {
+				$("#hc_rtxno_name_modify").val(datas.rtxno);
+				$("#hc_real_name_modify").val(datas.realname);
+				$("#hc_user_name_modify").val(datas.username);
+				$("#hc_user_email_modify").val(datas.email);
+				$("#hc_user_id_modify").val(id);
+			}
+		});
+
 	});
 
 	var id = "";
 	$(document).on('click', 'a[name=operater_modal]', function() {
 		var href = $(this).attr("href");
 		id = href.split("#")[1];
-		$('#mf_setting_dialog').modal('show');
+		$('#hc_setting_dialog').modal('show');
 		$.ajax({
 			type : 'get',
 			dataType : 'json',
-			url : '/mf/system/user/role/' + id + '/ajax',
+			url : '/hc/system/user/role/' + id + '/ajax',
 			success : function(datas) {
-				$("#mf_role_list").html("");
+				$("#hc_role_list").html("");
 				console.log(datas);
 				var chk = "";
 				for (var i = 0; i < datas.role.length; i++) {
 					chk += "<input class='actionRole' type='checkbox' value='" + datas.role[i].id + "'>" + datas.role[i].roleName + "&nbsp;&nbsp;";
 				}
-				$("#mf_role_list").append(chk);
+				$("#hc_role_list").append(chk);
 				if (datas.userRole.length > 0) {
 					$("input[type=checkbox]").each(function() {
 						for (var i = 0; i < datas.userRole.length; i++) {
@@ -75,9 +94,9 @@ $(document).ready(function() {
 
 	$(document).on("click", ".actionRole", function() {
 		if ($(this).is(":checked")) {
-			updateRole('/mf/system/user/role/add/' + id + '/' + $(this).val() + '/ajax')
+			updateRole('/hc/system/user/role/add/' + id + '/' + $(this).val() + '/ajax')
 		} else {
-			updateRole('/mf/system/user/role/delete/' + id + '/' + $(this).val() + '/ajax')
+			updateRole('/hc/system/user/role/delete/' + id + '/' + $(this).val() + '/ajax')
 		}
 	});
 

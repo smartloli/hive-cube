@@ -7,9 +7,9 @@ $(document).ready(function() {
 		return [ d.y, d.x ];
 	});
 
-	var vis = d3.select("#mf_graph_home").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+	var vis = d3.select("#hc_graph_home").append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-	d3.json('/mf/system/resource/graph/ajax', function(json) {
+	d3.json('/hc/system/resource/graph/ajax', function(json) {
 		root = json;
 		root.x0 = h / 2;
 		root.y0 = 0;
@@ -137,17 +137,17 @@ $(document).ready(function() {
 	}
 
 	$("#config-home-btn").click(function() {
-		$('#mf_home_dialog').modal('show');
+		$('#hc_home_dialog').modal('show');
 	});
 
 	$("#config-children-btn").click(function() {
-		$('#mf_child_dialog').modal('show');
-		selectResource("#res_parent_id", "/mf/system/resource/parent/ajax");
+		$('#hc_child_dialog').modal('show');
+		selectResource("#res_parent_id", "/hc/system/resource/parent/ajax");
 	});
 
 	$("#config-delete-btn").click(function() {
-		$('#mf_delete_dialog').modal('show');
-		selectResource("#res_child_root_id", "/mf/system/resource/parent/ajax");
+		$('#hc_delete_dialog').modal('show');
+		selectResource("#res_child_root_id", "/hc/system/resource/parent/ajax");
 	});
 
 	function selectResource(id, url) {
@@ -170,7 +170,6 @@ $(document).ready(function() {
 	}
 
 	$("#res_child_root_id").change(function() {
-		console.log($("#res_child_root_id").val());
-		selectResource("#res_child_id", "/mf/system/resource/child/" + $("#res_child_root_id").val() + "/ajax");
+		selectResource("#res_child_id", "/hc/system/resource/child/" + $("#res_child_root_id").val() + "/ajax");
 	});
 });

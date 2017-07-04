@@ -64,7 +64,7 @@ public class AccountController {
 		token.setRememberMe(true);
 		Subject subject = SecurityUtils.getSubject();
 		if (subject.isAuthenticated()) {
-			return "redirect:" + refUrl.replaceAll("/mf", "");
+			return "redirect:" + refUrl.replaceAll("/hc", "");
 		} else {
 			subject.getSession().setAttribute(Login.ERROR_LOGIN, "<div class='alert alert-danger'>Account or password is error.</div>");
 		}
@@ -75,7 +75,7 @@ public class AccountController {
 	/** Reset password by current account. */
 	@RequestMapping(value = "/reset/", method = RequestMethod.POST)
 	public String reset(HttpSession session, HttpServletRequest request) {
-		String password = request.getParameter("mf_new_password_name");
+		String password = request.getParameter("hc_new_password_name");
 		Signiner signin = (Signiner) SecurityUtils.getSubject().getSession().getAttribute(Login.SESSION_USER);
 		signin.setPassword(password);
 		int code = accountService.reset(signin);

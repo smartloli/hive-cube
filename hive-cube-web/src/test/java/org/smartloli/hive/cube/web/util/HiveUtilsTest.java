@@ -15,40 +15,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartloli.hive.cube.web.service;
+/**
+ * 
+ */
+package org.smartloli.hive.cube.web.util;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.smartloli.hive.cube.common.pojo.Signiner;
+import org.smartloli.hive.cube.common.util.HiveUtils;
 
 /**
- * Account service interface.
+ * Test Sample.
  * 
  * @author smartloli.
  *
- *         Created by May 16, 2017
+ *         Created by Jul 4, 2017
  */
-public interface AccountService {
+public class HiveUtilsTest {
 
-	public int delete(Signiner signin);
-	
-	public Signiner findUserByRtxNo(int rtxno);
-
-	public List<Signiner> findUserBySearch(Map<String, Object> params);
-
-	public String findUserById(int id);
-	
-	public int insertUser(Signiner signin);
-
-	public int modify(Signiner signin);
-	
-	public Signiner login(String username, String password);
-
-	public int reset(Signiner signin);
-
-	public int userCounts();
-	
-	public List<String> getUserEmails();
+	public static void main(String[] args) throws SQLException {
+		HiveUtils hive = new HiveUtils();
+		ResultSet rs = hive.executeQuery("select count(*) as total from ip_login");
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnCount = rsmd.getColumnCount();
+		while (rs.next()) {
+			Map<String, Object> map = new LinkedHashMap<String, Object>();
+			for (int i = 1; i <= columnCount; i++) {
+				map.put(rsmd.getColumnName(i), rs.getString(i));
+			}
+			System.out.println(map.toString());
+		}
+		hive.close(rs);
+	}
 	
 }

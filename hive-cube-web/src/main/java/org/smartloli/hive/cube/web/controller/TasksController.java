@@ -162,7 +162,7 @@ public class TasksController {
 				object.put("log", task.getLog());
 			}
 			if (download != null && download != "") {
-				object.put("result", "<a href='/assert/mf/export/" + task.getDownload() + "'>Download</a>");
+				object.put("result", "<a href='/assert/hc/export/" + task.getDownload() + "'>Download</a>");
 			} else {
 				object.put("result", "");
 			}
@@ -176,8 +176,8 @@ public class TasksController {
 			object.put("stime", task.getStartTime());
 			object.put("etime", task.getEndTime());
 			object.put("operate",
-					"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='/mf/tasks/executor/public/task/"
-							+ id + "/'>Run</a><li><a href='/mf/tasks/kill/public/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
+					"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='/hc/tasks/executor/public/task/"
+							+ id + "/'>Run</a><li><a href='/hc/tasks/kill/public/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
 							+ "'>Edit</a><li><a name='operater_modal_auto' href='#" + id + "'>Auto</a></ul></div>");
 			aaDatas.add(object);
 		}
@@ -254,7 +254,7 @@ public class TasksController {
 				object.put("log", task.getLog());
 			}
 			if (download != null && download != "") {
-				object.put("result", "<a href='/assert/mf/export/" + task.getDownload() + "'>Download</a>");
+				object.put("result", "<a href='/assert/hc/export/" + task.getDownload() + "'>Download</a>");
 			} else {
 				object.put("result", "");
 			}
@@ -268,9 +268,9 @@ public class TasksController {
 			object.put("stime", task.getStartTime());
 			object.put("etime", task.getEndTime());
 			object.put("operate",
-					"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='/mf/tasks/executor/private/task/"
-							+ id + "/'>Run</a><li><a href='/mf/tasks/kill/private/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
-							+ "'>Edit</a><li><a name='operater_modal' href='/mf/tasks/delete/private/task/" + id + "/'>Delete</a></ul></div>");
+					"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='/hc/tasks/executor/private/task/"
+							+ id + "/'>Run</a><li><a href='/hc/tasks/kill/private/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
+							+ "'>Edit</a><li><a name='operater_modal' href='/hc/tasks/delete/private/task/" + id + "/'>Delete</a></ul></div>");
 			aaDatas.add(object);
 		}
 
@@ -344,12 +344,12 @@ public class TasksController {
 	/** Modify task content by task id. */
 	@RequestMapping(value = "/content/modify/", method = RequestMethod.POST)
 	public String modifyTaskContent(HttpSession session, HttpServletRequest request) {
-		String id = request.getParameter("mf_task_id");
-		String name = request.getParameter("mf_task_name");
-		String email = request.getParameter("mf_task_email");
-		String content = request.getParameter("mf_task_content");
-		String column = request.getParameter("mf_task_column");
-		String ref = request.getParameter("mf_task_ref");
+		String id = request.getParameter("hc_task_id");
+		String name = request.getParameter("hc_task_name");
+		String email = request.getParameter("hc_task_email");
+		String content = request.getParameter("hc_task_content");
+		String column = request.getParameter("hc_task_column");
+		String ref = request.getParameter("hc_task_ref");
 		JSONObject object = new JSONObject();
 		object.put("column", column);
 		object.put("context", JSON.parseArray(content.trim().replaceAll("\r\n", "")));

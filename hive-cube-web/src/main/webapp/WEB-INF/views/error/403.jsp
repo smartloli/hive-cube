@@ -6,7 +6,7 @@
 <html lang="zh">
 
 <head>
-<title>403 - MF</title>
+<title>403 - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 <div class="container">
@@ -19,9 +19,9 @@
 				<div class="panel-body">
 					<form role="form">
 						<fieldset>
-							<h1 class="form-signin-heading">权限不足 ~~</h1>
+							<h1 class="form-signin-heading">Insufficient authority ~~</h1>
 							<!-- Change this to a button or input when using this as a form -->
-							<a href="/mf" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
+							<a href="/hc" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
 						</fieldset>
 					</form>
 				</div>

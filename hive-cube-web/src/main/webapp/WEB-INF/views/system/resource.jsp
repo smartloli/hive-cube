@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><spring:message code="system.resource.title"></spring:message></title>
+<title>Resource - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 <style type="text/css">
@@ -42,9 +42,7 @@ path.link {
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<spring:message code="system.resource.content"></spring:message>
-						<small><spring:message
-								code="system.resource.content.small"></spring:message></small>
+						Resource Manager <small>overview</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -55,8 +53,8 @@ path.link {
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
-						<i class="fa fa-info-circle"></i> <strong><spring:message
-								code="system.resource.head.describer"></spring:message></strong>
+						<i class="fa fa-info-circle"></i> <strong>Display system
+							resource module, you can add and delete it.</strong>
 					</div>
 				</div>
 			</div>
@@ -67,18 +65,15 @@ path.link {
 						<div class="panel-heading">
 							<button type="button" id="config-home-btn"
 								class="btn btn-sm btn-success">
-								<span class="fa fa-edit fa-fw"></span>
-								<spring:message code="system.resource.btn.home"></spring:message>
+								<span class="fa fa-edit fa-fw"></span> Add Parent
 							</button>
 							<button type="button" id="config-children-btn"
 								class="btn btn-sm btn-primary">
-								<span class="fa fa-sitemap fa-fw"></span>
-								<spring:message code="system.resource.btn.children"></spring:message>
+								<span class="fa fa-sitemap fa-fw"></span> Add Children
 							</button>
 							<button type="button" id="config-delete-btn"
 								class="btn btn-sm btn-danger">
-								<span class="fa fa-trash-o fa-fw"></span>
-								<spring:message code="system.resource.btn.delete"></spring:message>
+								<span class="fa fa-trash-o fa-fw"></span> Delete
 							</button>
 						</div>
 					</div>
@@ -89,13 +84,12 @@ path.link {
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-tasks fa-fw"></i>
-							<spring:message code="system.resource.graph.title"></spring:message>
+							<i class="fa fa-tasks fa-fw"></i> Menu Graph
 							<div class="pull-right"></div>
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div id="mf_graph_home"></div>
+							<div id="hc_graph_home"></div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -104,33 +98,33 @@ path.link {
 			</div>
 			<!-- /.row -->
 			<!-- home -->
-			<div class="modal fade" aria-labelledby="mfModalLabel"
-				aria-hidden="true" id="mf_home_dialog" tabindex="-1" role="dialog">
+			<div class="modal fade" aria-labelledby="hcModalLabel"
+				aria-hidden="true" id="hc_home_dialog" tabindex="-1" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
-							<h4 class="modal-title" id="mfModalLabel">
+							<h4 class="modal-title" id="hcModalLabel">
 								<spring:message code="system.resource.btn.home"></spring:message>
 							</h4>
 						</div>
 						<!-- /.row -->
-						<form role="form" action="/mf/system/resource/add/home/"
+						<form role="form" action="/hc/system/resource/add/home/"
 							method="post" onsubmit="return contextFormValid();return false;">
 							<div class="modal-body">
 								<fieldset class="form-horizontal">
 									<div class="form-group">
 										<label for="path" class="col-sm-2 control-label">Name</label>
 										<div class="col-sm-10">
-											<input id="mf_resource_home_name"
-												name="mf_resource_home_name" type="text"
-												class="form-control" placeholder="资源管理">
+											<input id="hc_resource_home_name"
+												name="hc_resource_home_name" type="text"
+												class="form-control" placeholder="Resource Manager">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="path" class="col-sm-2 control-label">URL</label>
 										<div class="col-sm-10">
-											<input id="mf_resource_home_url" name="mf_resource_home_url"
+											<input id="hc_resource_home_url" name="hc_resource_home_url"
 												type="text" class="form-control"
 												placeholder="/system/resource">
 										</div>
@@ -143,8 +137,8 @@ path.link {
 							</div>
 							<div id="remove_div" class="modal-footer">
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">取消</button>
-								<button type="submit" class="btn btn-primary" id="create-btn">确认
+									data-dismiss="modal">Cancle</button>
+								<button type="submit" class="btn btn-primary" id="create-btn">Sure
 								</button>
 							</div>
 						</form>
@@ -152,25 +146,24 @@ path.link {
 				</div>
 			</div>
 			<!-- children -->
-			<div class="modal fade" aria-labelledby="mfModalLabelChild"
-				aria-hidden="true" id="mf_child_dialog" tabindex="-1" role="dialog">
+			<div class="modal fade" aria-labelledby="hcModalLabelChild"
+				aria-hidden="true" id="hc_child_dialog" tabindex="-1" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
-							<h4 class="modal-title" id="mfModalLabelChild">
-								<spring:message code="system.resource.btn.children"></spring:message>
+							<h4 class="modal-title" id="hcModalLabelChild">Children Menu
 							</h4>
 						</div>
 						<!-- /.row -->
-						<form role="form" action="/mf/system/resource/add/children/"
+						<form role="form" action="/hc/system/resource/add/children/"
 							method="post"
 							onsubmit="return contextChildFormValid();return false;">
 							<div class="modal-body">
 								<fieldset class="form-horizontal">
 									<div class="form-group">
-										<label for="path" class="col-sm-2 control-label"><spring:message
-												code="system.resource.content.root"></spring:message></label>
+										<label for="path" class="col-sm-2 control-label">Parent
+											Menu</label>
 										<div class="col-sm-10">
 											<select id="res_parent_id" name="res_parent_id"
 												class="form-control">
@@ -180,16 +173,16 @@ path.link {
 									<div class="form-group">
 										<label for="path" class="col-sm-2 control-label">Name</label>
 										<div class="col-sm-10">
-											<input id="mf_resource_child_name"
-												name="mf_resource_child_name" type="text"
-												class="form-control" placeholder="资源管理-添加">
+											<input id="hc_resource_child_name"
+												name="hc_resource_child_name" type="text"
+												class="form-control" placeholder="Start">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="path" class="col-sm-2 control-label">URL</label>
 										<div class="col-sm-10">
-											<input id="mf_resource_child_url"
-												name="mf_resource_child_url" type="text"
+											<input id="hc_resource_child_url"
+												name="hc_resource_child_url" type="text"
 												class="form-control" placeholder="/system/resource/add">
 										</div>
 									</div>
@@ -201,8 +194,8 @@ path.link {
 							</div>
 							<div id="remove_div" class="modal-footer">
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">取消</button>
-								<button type="submit" class="btn btn-primary" id="create-btn">确认
+									data-dismiss="modal">Cancle</button>
+								<button type="submit" class="btn btn-primary" id="create-btn">Sure
 								</button>
 							</div>
 						</form>
@@ -210,26 +203,24 @@ path.link {
 				</div>
 			</div>
 			<!-- delete -->
-			<div class="modal fade" aria-labelledby="mfModalLabelDelete"
-				aria-hidden="true" id="mf_delete_dialog" tabindex="-1" role="dialog">
+			<div class="modal fade" aria-labelledby="hcModalLabelDelete"
+				aria-hidden="true" id="hc_delete_dialog" tabindex="-1" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
-							<h4 class="modal-title" id="mfModalLabelDelete">
-								<spring:message code="system.resource.btn.delete"></spring:message>
-							</h4>
+							<h4 class="modal-title" id="hcModalLabelDelete">Delete</h4>
 						</div>
 						<!-- /.row -->
 						<form role="form"
-							action="/mf/system/resource/delete/parent/or/children/"
+							action="/hc/system/resource/delete/parent/or/children/"
 							method="post"
 							onsubmit="return contextDeleteFormValid();return false;">
 							<div class="modal-body">
 								<fieldset class="form-horizontal">
 									<div class="form-group">
-										<label for="path" class="col-sm-2 control-label"><spring:message
-												code="system.resource.content.root"></spring:message></label>
+										<label for="path" class="col-sm-2 control-label">Parent
+											Menu</label>
 										<div class="col-sm-10">
 											<select id="res_child_root_id" name="res_child_root_id"
 												class="form-control">
@@ -237,8 +228,8 @@ path.link {
 										</div>
 									</div>
 									<div class="form-group">
-										<label for="path" class="col-sm-2 control-label"><spring:message
-												code="system.resource.content.child"></spring:message></label>
+										<label for="path" class="col-sm-2 control-label">Children
+											Menu</label>
 										<div class="col-sm-10">
 											<select id="res_child_id" name="res_child_id"
 												class="form-control">
@@ -253,8 +244,8 @@ path.link {
 							</div>
 							<div id="remove_div" class="modal-footer">
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">取消</button>
-								<button type="submit" class="btn btn-danger" id="create-btn">删除
+									data-dismiss="modal">Cancle</button>
+								<button type="submit" class="btn btn-danger" id="create-btn">Delete
 								</button>
 							</div>
 						</form>
@@ -272,10 +263,10 @@ path.link {
 </jsp:include>
 <script type="text/javascript">
 	function contextFormValid() {
-		var mf_resource_home_name = $("#mf_resource_home_name").val();
-		var mf_resource_home_url = $("#mf_resource_home_url").val();
+		var hc_resource_home_name = $("#hc_resource_home_name").val();
+		var hc_resource_home_url = $("#hc_resource_home_url").val();
 		var reg = /^[\u4e00-\u9fa5]+$/;
-		if (mf_resource_home_url.length == 0 || mf_resource_home_name.length == 0 || reg.test(mf_resource_home_url)) {
+		if (hc_resource_home_url.length == 0 || hc_resource_home_name.length == 0 || reg.test(hc_resource_home_url)) {
 			$("#alert_mssage").show();
 			setTimeout(function() {
 				$("#alert_mssage").hide()
@@ -287,10 +278,10 @@ path.link {
 	}
 
 	function contextChildFormValid() {
-		var mf_resource_child_name = $("#mf_resource_child_name").val();
-		var mf_resource_child_url = $("#mf_resource_child_url").val();
+		var hc_resource_child_name = $("#hc_resource_child_name").val();
+		var hc_resource_child_url = $("#hc_resource_child_url").val();
 		var reg = /^[\u4e00-\u9fa5]+$/;
-		if (mf_resource_child_url.length == 0 || mf_resource_child_name.length == 0 || reg.test(mf_resource_child_url)) {
+		if (hc_resource_child_url.length == 0 || hc_resource_child_name.length == 0 || reg.test(hc_resource_child_url)) {
 			$("#alert_mssage_child").show();
 			setTimeout(function() {
 				$("#alert_mssage_child").hide()

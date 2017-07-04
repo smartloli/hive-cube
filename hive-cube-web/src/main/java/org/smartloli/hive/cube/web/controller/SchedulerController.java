@@ -141,7 +141,7 @@ public class SchedulerController {
 				object.put("log", task.getLog());
 			}
 			if (download != null && download != "") {
-				object.put("result", "<a href='/assert/mf/export/" + task.getDownload() + "'>Download</a>");
+				object.put("result", "<a href='/assert/hc/export/" + task.getDownload() + "'>Download</a>");
 			} else {
 				object.put("result", "");
 			}
@@ -239,7 +239,7 @@ public class SchedulerController {
 				object.put("log", task.getLog());
 			}
 			if (download != null && download != "") {
-				object.put("result", "<a href='/assert/mf/export/" + task.getDownload() + "'>Download</a>");
+				object.put("result", "<a href='/assert/hc/export/" + task.getDownload() + "'>Download</a>");
 			} else {
 				object.put("result", "");
 			}
@@ -288,10 +288,10 @@ public class SchedulerController {
 	/** Modify auto quartz. */
 	@RequestMapping(value = "/auto/quartz/modify/", method = RequestMethod.POST)
 	public String modifyScheduleTask(HttpSession session, HttpServletRequest request) {
-		String id = request.getParameter("mf_task_name_id");
-		String cron = request.getParameter("mf_task_quartz");
-		String ref = request.getParameter("mf_task_name_ref");
-		String action = request.getParameter("mf_task_name_action");
+		String id = request.getParameter("hc_task_name_id");
+		String cron = request.getParameter("hc_task_quartz");
+		String ref = request.getParameter("hc_task_name_ref");
+		String action = request.getParameter("hc_task_name_action");
 		Scheduler scheduler = new Scheduler();
 		scheduler.setTaskId(Integer.valueOf(id));
 		if (CommonClientConfigs.Scheduler.STOP.equals(action)) {

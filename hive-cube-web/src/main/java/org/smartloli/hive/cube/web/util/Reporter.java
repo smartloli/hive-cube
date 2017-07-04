@@ -18,9 +18,11 @@
 package org.smartloli.hive.cube.web.util;
 
 import java.io.File;
+import java.util.List;
 
 import org.smartloli.hive.cube.api.email.MailUtils;
 import org.smartloli.hive.cube.common.client.CommonClientConfigs;
+import org.smartloli.hive.cube.common.pojo.Signiner;
 import org.smartloli.hive.cube.common.pojo.Task;
 import org.smartloli.hive.cube.common.util.SystemConfig;
 
@@ -50,6 +52,30 @@ public class Reporter {
 			mail.setContent("Hive Cube Notice:<" + task.getName() + "> has export, task id is [" + task.getId() + "]<br>Download :" + download + "<br>QA : " + reback);
 			mail.start();
 		}
+	}
+
+	/** Create user info. */
+	public static void userInfo(Signiner signin) {
+		MailUtils mail = new MailUtils();
+		mail.setAddress(signin.getEmail());
+		mail.setSubject("*** Password ***");
+		mail.setContent("Hive Cube Notice : <br> You can user account (" + signin.getUsername() + ") or rtxno (" + signin.getRtxno() + ") login, you password is : ["
+				+ signin.getPassword() + "], you can reset password in system config.");
+		mail.start();
+	}
+
+	/** Send system notice. */
+	public static void notice(String content, List<String> emails) {
+		String reback = SystemConfig.getProperty("mf.reback.user");
+		String senders = "";
+		for (String email : emails) {
+			senders += email + ";";
+		}
+		MailUtils mail = new MailUtils();
+		mail.setAddress(senders.substring(0, senders.length() - 1));
+		mail.setSubject("*** System Notice ***");
+		mail.setContent("Hive Cube Notice : <br> " + content + " <br> QA : " + reback);
+		mail.start();
 	}
 
 }

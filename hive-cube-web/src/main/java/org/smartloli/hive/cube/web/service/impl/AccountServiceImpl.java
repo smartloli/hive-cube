@@ -17,6 +17,7 @@
  */
 package org.smartloli.hive.cube.web.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import org.smartloli.hive.cube.web.dao.UserDao;
 import org.smartloli.hive.cube.web.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Account service implements.
@@ -39,6 +42,22 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Override
+	public int delete(Signiner signin) {
+		return userDao.delete(signin);
+	}
+
+	@Override
+	public String findUserById(int id) {
+		Signiner signer = userDao.findUserById(id);
+		JSONObject object = new JSONObject();
+		object.put("rtxno", signer.getRtxno());
+		object.put("username", signer.getUsername());
+		object.put("realname", signer.getRealname());
+		object.put("email", signer.getEmail());
+		return object.toJSONString();
+	}
 
 	@Override
 	public Signiner findUserByRtxNo(int rtxno) {
@@ -60,13 +79,13 @@ public class AccountServiceImpl implements AccountService {
 		Signiner signin = new Signiner();
 		signin.setUsername(username);
 		signin.setPassword(password);
-	
+
 		if (userDao.login(signin) == null) {
 			signin.setUsername(CommonClientConfigs.Login.UNKNOW_USER);
 			signin.setPassword("");
 			return signin;
 		}
-	
+
 		return userDao.login(signin);
 	}
 
@@ -78,6 +97,21 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public int reset(Signiner signin) {
 		return userDao.reset(signin);
+	}
+
+	@Override
+	public int modify(Signiner signin) {
+		return userDao.modify(signin);
+	}
+
+	@Override
+	public List<String> getUserEmails() {
+		List<Signiner> signers = userDao.getUserEmails();
+		List<String> email = new ArrayList<>();
+		for (Signiner signiner : signers) {
+			email.add(signiner.getEmail());
+		}
+		return email;
 	}
 
 }

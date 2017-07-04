@@ -1,12 +1,11 @@
 $(document).ready(function() {
 	$("#result").dataTable({
-		// "searching" : false,
 		"bSort" : false,
 		"bLengthChange" : false,
 		"bProcessing" : true,
 		"bServerSide" : true,
 		"fnServerData" : retrieveData,
-		"sAjaxSource" : "/mf/config/hive/all/table/ajax",
+		"sAjaxSource" : "/hc/config/hive/all/table/ajax",
 		"aoColumns" : [ {
 			"mData" : 'tablename'
 		}, {
@@ -39,8 +38,8 @@ $(document).ready(function() {
 		var href = $(this).attr("href");
 		var tableName = href.split("#")[1];
 		console.log(tableName);
-		$("#mf_name_hive_table").val(tableName);
-		$('#mf_edit_dialog').modal('show');
+		$("#hc_name_hive_table").val(tableName);
+		$('#hc_edit_dialog').modal('show');
 	});
 
 });

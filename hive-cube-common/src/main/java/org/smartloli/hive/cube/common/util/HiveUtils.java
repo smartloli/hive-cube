@@ -54,7 +54,7 @@ public class HiveUtils {
 
 	public HiveUtils() {
 		try {
-			String[] urls = SystemConfig.getProperty("hive.cube.url").split(",");
+			String[] urls = SystemConfig.getProperty("hive.cube.hive.url").split(",");
 			for (String url : urls) {
 				String connect = url.split("&")[0];
 				String user = url.split("&")[1];

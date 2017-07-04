@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><spring:message code="dashboard.title"></spring:message></title>
+<title>Dashboard - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 <body>
@@ -24,8 +24,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<spring:message code="dashboard.header"></spring:message>
-						<small><spring:message code="dashboard.header.small"></spring:message></small>
+						Dashboard <small>overview</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -36,8 +35,11 @@
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
-						<i class="fa fa-info-circle"></i> <strong><spring:message
-								code="dashboard.header.context"></spring:message></strong>
+						<i class="fa fa-info-circle"></i> <strong>The data hive
+							cube control panel displays export tasks, such as approval tasks,
+							running tasks, queuing tasks, and failed tasks. Also, visualize
+							the historical trend diagram (new tasks). At the same time, list
+							the details of the last ten tasks.</strong>
 					</div>
 				</div>
 			</div>
@@ -52,17 +54,14 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div id="task_running_count" class="huge">0</div>
-									<div>
-										<spring:message code="dashboard.panel.running"></spring:message>
-									</div>
+									<div>Running</div>
 								</div>
 							</div>
 						</div>
-						<a href="/mf/tasks/public">
+						<a href="/hc/tasks/public">
 							<div class="panel-footer">
-								<span class="pull-left"><spring:message
-										code="dashboard.panel.detail"></spring:message></span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">Detail</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -77,17 +76,14 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div id="task_finished_count" class="huge">0</div>
-									<div>
-										<spring:message code="dashboard.panel.finished"></spring:message>
-									</div>
+									<div>Finished</div>
 								</div>
 							</div>
 						</div>
-						<a href="/mf/tasks/public">
+						<a href="/hc/tasks/public">
 							<div class="panel-footer">
-								<span class="pull-left"><spring:message
-										code="dashboard.panel.detail"></spring:message></span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">Detail</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -102,17 +98,14 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div id="task_queue_count" class="huge">0</div>
-									<div>
-										<spring:message code="dashboard.panel.queue"></spring:message>
-									</div>
+									<div>Queue</div>
 								</div>
 							</div>
 						</div>
-						<a href="/mf/tasks/public">
+						<a href="/hc/tasks/public">
 							<div class="panel-footer">
-								<span class="pull-left"><spring:message
-										code="dashboard.panel.detail"></spring:message></span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">Detail</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -127,17 +120,14 @@
 								</div>
 								<div class="col-xs-9 text-right">
 									<div id="task_failed_count" class="huge">0</div>
-									<div>
-										<spring:message code="dashboard.panel.failed"></spring:message>
-									</div>
+									<div>Failed</div>
 								</div>
 							</div>
 						</div>
-						<a href="/mf/tasks/public">
+						<a href="/hc/tasks/public">
 							<div class="panel-footer">
-								<span class="pull-left"><spring:message
-										code="dashboard.panel.detail"></spring:message></span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+								<span class="pull-left">Detail</span> <span class="pull-right"><i
+									class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
 						</a>
@@ -147,8 +137,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								<i class="fa fa-bar-chart-o fa-fw"></i>
-								<spring:message code="dashboard.history.chart"></spring:message>
+								<i class="fa fa-bar-chart-o fa-fw"></i> Today Tasks
 							</h3>
 						</div>
 						<div class="panel-body">
@@ -160,8 +149,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">
-								<i class="fa fa-table fa-fw"></i>
-								<spring:message code="dashboard.recently.ten"></spring:message>
+								<i class="fa fa-table fa-fw"></i> Lastest 10
 							</h3>
 						</div>
 						<div class="panel-body">
@@ -171,7 +159,7 @@
 								</table>
 							</div>
 							<div class="text-right">
-								<a href="/mf/tasks/public">浏览所有任务 <i
+								<a href="/hc/tasks/public">Scan All Task <i
 									class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>

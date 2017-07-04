@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title><spring:message code="system.role.title"></spring:message></title>
+<title>Role - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 <jsp:include page="../public/tcss.jsp"></jsp:include>
 </head>
@@ -26,8 +26,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						<spring:message code="system.role.content"></spring:message>
-						<small><spring:message code="system.role.content.small"></spring:message></small>
+						Role Manager <small>overview</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -38,8 +37,9 @@
 					<div class="alert alert-info alert-dismissable">
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
-						<i class="fa fa-info-circle"></i> <strong><spring:message
-								code="system.role.head.describer"></spring:message></strong>
+						<i class="fa fa-info-circle"></i> <strong>Display the
+							role management list and configure the template directories that
+							each role can access.</strong>
 					</div>
 				</div>
 			</div>
@@ -48,8 +48,7 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-cogs fa-fw"></i>
-							<spring:message code="system.role.head.title"></spring:message>
+							<i class="fa fa-cogs fa-fw"></i> Role
 							<div class="pull-right"></div>
 						</div>
 						<!-- /.panel-heading -->
@@ -58,9 +57,9 @@
 								width="100%">
 								<thead>
 									<tr>
-										<th>名称</th>
-										<th>描述</th>
-										<th>操作</th>
+										<th>Name</th>
+										<th>Describer</th>
+										<th>Operate</th>
 									</tr>
 								</thead>
 							</table>
@@ -71,17 +70,16 @@
 				<!-- /.row -->
 			</div>
 			<!-- modal -->
-			<div class="modal fade" aria-labelledby="mfModalLabel"
-				aria-hidden="true" id="mf_setting_dialog" tabindex="-1"
+			<div class="modal fade" aria-labelledby="hcModalLabel"
+				aria-hidden="true" id="hc_setting_dialog" tabindex="-1"
 				role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
-							<h4 class="modal-title" id="mfModalLabel">
-								<spring:message code="system.role.setting"></spring:message>
-							</h4>
-							<div id="mf_role_alert_mssage"></div>
+							<h4 class="modal-title" id="hcModalLabel">Authority
+								Assignment</h4>
+							<div id="hc_role_alert_mssage"></div>
 						</div>
 						<!-- /.row -->
 						<form role="form" action="#" method="post"
@@ -91,7 +89,7 @@
 							</div>
 							<div id="remove_div" class="modal-footer">
 								<button type="button" class="btn btn-primary"
-									data-dismiss="modal">关闭</button>
+									data-dismiss="modal">Close</button>
 							</div>
 						</form>
 					</div>

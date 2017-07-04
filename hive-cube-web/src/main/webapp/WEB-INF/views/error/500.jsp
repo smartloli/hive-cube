@@ -6,7 +6,7 @@
 <html lang="zh">
 
 <head>
-<title>500 - MF</title>
+<title>500 - Hive Cube</title>
 <jsp:include page="../public/css.jsp"></jsp:include>
 </head>
 <div class="container">
@@ -19,9 +19,9 @@
 				<div class="panel-body">
 					<form role="form">
 						<fieldset>
-							<h1 class="form-signin-heading">内部服务器错误 ~~</h1>
+							<h1 class="form-signin-heading">Internal Server Error ~~</h1>
 							<!-- Change this to a button or input when using this as a form -->
-							<a href="/mf" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
+							<a href="/hc" id="submit" class="btn btn-lg btn-primary btn-block">Return</a>
 						</fieldset>
 					</form>
 				</div>

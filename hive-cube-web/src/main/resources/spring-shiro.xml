@@ -31,14 +31,14 @@
 		<property name="sessionManager" ref="sessionManager" />
 	</bean>
 
-	<bean id="mfAuthc" class="org.smartloli.hive.cube.web.sso.filter.SSOFilter" />
+	<bean id="hcAuthc" class="org.smartloli.hive.cube.web.sso.filter.SSOFilter" />
 
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="successUrl" value="/" />
 		<property name="filters">
 			<map>
-				<entry key="authc" value-ref="mfAuthc" />
+				<entry key="authc" value-ref="hcAuthc" />
 			</map>
 		</property>
 

@@ -84,4 +84,9 @@ public class CommonClientConfigs {
 		public final static String SELECT = "select";
 	}
 
+	/** Role is equal admin. */
+	public interface Role {
+		public final static String ADMIN = "admin";
+	}
+
 }

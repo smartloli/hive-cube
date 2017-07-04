@@ -30,15 +30,25 @@ import org.smartloli.hive.cube.common.pojo.Signiner;
  *         Created by May 16, 2017
  */
 public interface UserDao {
+
+	public int delete(Signiner signin);
+
 	public List<Signiner> findUserByRtxNo(int rtxno);
 
 	public List<Signiner> findUserBySearch(Map<String, Object> params);
 
 	public int insertUser(Signiner signin);
 
+	public int modify(Signiner signin);
+
 	public Signiner login(Signiner signin);
 
 	public int reset(Signiner signin);
 
 	public int userCounts();
+
+	public Signiner findUserById(int id);
+
+	public List<Signiner> getUserEmails();
+
 }

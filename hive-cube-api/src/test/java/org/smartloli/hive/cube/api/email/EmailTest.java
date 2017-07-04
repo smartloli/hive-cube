@@ -31,7 +31,7 @@ public class EmailTest extends TestCase{
 	/** Send email message. */
 	public static void send() {
 		MailUtils mail = new MailUtils();
-		mail.setAddress("SmartloliDeng@boyaa.com");
+		mail.setAddress("smartloli.org@gmail.com");
 		mail.setContent("Test mail message.");
 		mail.setSubject("*** Test ***");
 		mail.start();

@@ -18,6 +18,7 @@
 package org.smartloli.hive.cube.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,13 +27,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.smartloli.hive.cube.api.email.MailUtils;
+import org.smartloli.hive.cube.common.client.CommonClientConfigs;
 import org.smartloli.hive.cube.common.pojo.RoleResource;
 import org.smartloli.hive.cube.common.pojo.Signiner;
 import org.smartloli.hive.cube.common.pojo.UserRole;
 import org.smartloli.hive.cube.web.service.AccountService;
 import org.smartloli.hive.cube.web.service.RoleService;
 import org.smartloli.hive.cube.web.sso.filter.SSORealm;
+import org.smartloli.hive.cube.web.util.Reporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,10 +94,10 @@ public class RoleController {
 	/** User add. */
 	@RequestMapping(value = "/user/add/", method = RequestMethod.POST)
 	public String addUser(HttpSession session, HttpServletRequest request) {
-		String rtxno = request.getParameter("mf_rtxno_name");
-		String username = request.getParameter("mf_user_name");
-		String realname = request.getParameter("mf_real_name");
-		String email = request.getParameter("mf_user_email");
+		String rtxno = request.getParameter("hc_rtxno_name");
+		String username = request.getParameter("hc_user_name");
+		String realname = request.getParameter("hc_real_name");
+		String email = request.getParameter("hc_user_email");
 
 		Signiner signin = new Signiner();
 		signin.setEmail(email);
@@ -104,15 +106,47 @@ public class RoleController {
 		signin.setRtxno(Integer.parseInt(rtxno));
 		signin.setUsername(username);
 		if (accountService.insertUser(signin) > 0) {
-			MailUtils mail = new MailUtils();
-			mail.setAddress(signin.getEmail());
-			mail.setSubject("*** Password ***");
-			mail.setContent("Your can user account (" + signin.getUsername() + ") or rtxno (" + signin.getRtxno() + ") login, you password is : [" + signin.getPassword()
-					+ "], you can reset password in system config.");
-			mail.start();
+			Reporter.userInfo(signin);
 			return "redirect:/system/user";
 		} else {
 			return "redirect:/errors/500";
+		}
+	}
+
+	/** User add. */
+	@RequestMapping(value = "/send/notice/", method = RequestMethod.POST)
+	public String sendNotice(HttpSession session, HttpServletRequest request) {
+		String content = request.getParameter("hc_notice_content");
+		List<String> emails = accountService.getUserEmails();
+		if (emails.size() > 0) {
+			Reporter.notice(content, emails);
+			return "redirect:/system/notice";
+		} else {
+			return "redirect:/errors/500";
+		}
+	}
+
+	/** Delete user by user id. */
+	@RequiresPermissions("/system/user/delete")
+	@RequestMapping(value = "/user/delete/{id}/", method = RequestMethod.GET)
+	public String deleteUser(@PathVariable("id") int id, HttpSession session, HttpServletRequest request) {
+		Signiner signin = new Signiner();
+		signin.setId(id);
+		if (accountService.delete(signin) > 0) {
+			return "redirect:/system/user";
+		} else {
+			return "redirect:/errors/500";
+		}
+	}
+
+	/** Find siginer through the user id. */
+	@RequestMapping(value = "/user/signin/{id}/ajax", method = RequestMethod.GET)
+	public void findUserByIdAjax(@PathVariable("id") int id, HttpServletResponse response, HttpServletRequest request) {
+		try {
+			byte[] output = accountService.findUserById(id).getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -146,11 +180,19 @@ public class RoleController {
 		for (Object object : roles) {
 			JSONObject role = (JSONObject) object;
 			JSONObject obj = new JSONObject();
+			int id = role.getInteger("id");
 			obj.put("rtxno", role.getString("rtxno"));
 			obj.put("username", role.getString("username"));
 			obj.put("realname", role.getString("realname"));
 			obj.put("email", role.getString("email"));
-			obj.put("operate", "<a id='operater_modal' name='operater_modal' href='#" + role.getInteger("id") + "' class='btn btn-primary btn-xs'>Assign</a>");
+			if (CommonClientConfigs.Role.ADMIN.equals(role.getString("username"))) {
+				obj.put("operate", "");
+			} else {
+				obj.put("operate",
+						"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a id='operater_modal' name='operater_modal' href='#"
+								+ id + "/'>Assign</a><li><a name='operater_modify_modal' href='#" + id + "'>Modify</a><li><a href='/hc/system/user/delete/" + id
+								+ "/'>Delete</a></ul></div>");
+			}
 			aaDatas.add(obj);
 		}
 
@@ -217,6 +259,29 @@ public class RoleController {
 			BaseController.response(output, response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+	}
+
+	/** Modify user. */
+	@RequiresPermissions("/system/user/modify")
+	@RequestMapping(value = "/user/modify/", method = RequestMethod.POST)
+	public String modifyUser(HttpSession session, HttpServletRequest request) {
+		String rtxno = request.getParameter("hc_rtxno_name_modify");
+		String username = request.getParameter("hc_user_name_modify");
+		String realname = request.getParameter("hc_real_name_modify");
+		String email = request.getParameter("hc_user_email_modify");
+		String id = request.getParameter("hc_user_id_modify");
+
+		Signiner signin = new Signiner();
+		signin.setId(Integer.parseInt(id));
+		signin.setEmail(email);
+		signin.setRealname(realname);
+		signin.setRtxno(Integer.parseInt(rtxno));
+		signin.setUsername(username);
+		if (accountService.modify(signin) > 0) {
+			return "redirect:/system/user";
+		} else {
+			return "redirect:/errors/500";
 		}
 	}
 

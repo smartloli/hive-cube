@@ -123,7 +123,7 @@ public class ConfigController {
 			JSONObject obj = new JSONObject();
 			int code = table.getInteger("code");
 			String tableName = table.getString("tableName");
-			obj.put("tablename", "<a href='/mf/config/hive/" + tableName + "/'>" + tableName + "</a>");
+			obj.put("tablename", "<a href='/hc/config/hive/" + tableName + "/'>" + tableName + "</a>");
 			obj.put("aliasname", table.getString("aliasName"));
 			if (code > 0) {
 				obj.put("status", "<a' class='btn btn-success btn-xs'>Success</a>");
@@ -239,7 +239,7 @@ public class ConfigController {
 		for (Rowkey rowkey : rowkeys) {
 			JSONObject object = new JSONObject();
 			object.put("tname", rowkey.getTname());
-			object.put("regular", "<a name='operate_modal_regular' href='#" + rowkey.getTname() + "'>查看</a>");
+			object.put("regular", "<a name='operate_modal_regular' href='#" + rowkey.getTname() + "'>View</a>");
 			object.put("author", rowkey.getAuthor());
 			object.put("time", rowkey.getTm());
 			object.put("operate",
@@ -283,8 +283,8 @@ public class ConfigController {
 	/** Sync hive one table. */
 	@RequestMapping(value = "/hive/sync/one/", method = RequestMethod.POST)
 	public String syncHiveOneTable(HttpSession session, HttpServletRequest request) {
-		String tableName = request.getParameter("mf_name_hive_table");
-		String aliasName = request.getParameter("mf_alias_hive_table");
+		String tableName = request.getParameter("hc_name_hive_table");
+		String aliasName = request.getParameter("hc_alias_hive_table");
 		hiveService.synchronizeTableFromHiveByName(tableName, aliasName);
 		return "redirect:/config/hive";
 	}
@@ -292,9 +292,9 @@ public class ConfigController {
 	/** Replace hive one table content. */
 	@RequestMapping(value = "/hive/replace/one/", method = RequestMethod.POST)
 	public String replaceHiveOneTable(HttpSession session, HttpServletRequest request) {
-		String tableName = request.getParameter("mf_name_hive_table");
-		String columnName = request.getParameter("mf_column_name_hive_table");
-		String comment = request.getParameter("mf_comment_hive_table");
+		String tableName = request.getParameter("hc_name_hive_table");
+		String columnName = request.getParameter("hc_column_name_hive_table");
+		String comment = request.getParameter("hc_comment_hive_table");
 		hiveService.modifyColumnCommentByName(tableName, columnName, comment);
 		return "redirect:/config/hive/" + tableName + "/";
 	}
@@ -302,8 +302,8 @@ public class ConfigController {
 	/** Add hbase rowkey. */
 	@RequestMapping(value = "/hbase/rowkey/add/", method = RequestMethod.POST)
 	public String rowkeyHBaseAddForm(HttpSession session, HttpServletRequest request) {
-		String tname = request.getParameter("mf_hbase_table");
-		String regular = request.getParameter("mf_hbase_rowkey_content");
+		String tname = request.getParameter("hc_hbase_table");
+		String regular = request.getParameter("hc_hbase_rowkey_content");
 		Signiner signin = (Signiner) SecurityUtils.getSubject().getSession().getAttribute(Login.SESSION_USER);
 
 		Rowkey rowkey = new Rowkey();
