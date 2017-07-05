@@ -205,21 +205,27 @@ public class TasksServiceImpl implements TasksService {
 	@Override
 	public int killTaskById(int id) {
 		String appId = tasksDao.getAppIdByTaskId(id);
-		if (appId == "" || appId == null) {
-			return 0;
-		} else {
+		if (appId != "" && appId != null) {
 			try {
-				if (!YarnManager.killApplication(appId)) {
-					Task task = tasksDao.findTaskById(id);
-					task.setEndTime(CalendarUtils.getDate());
-					task.setStatus(CommonClientConfigs.TaskStatus.EXECUTION_STOP);
-					tasksDao.batchModifyTaskStatus(Arrays.asList(task));
-				}
+				YarnManager.killApplication(appId);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return 1;
 			}
 		}
+
+		Task task = tasksDao.findTaskById(id);
+		task.setEndTime(CalendarUtils.getDate());
+		task.setStatus(CommonClientConfigs.TaskStatus.EXECUTION_STOP);
+		tasksDao.batchModifyTaskStatus(Arrays.asList(task));
+
+		// Remove task from queue
+		Queue queue = new Queue();
+		queue.setTask(task);
+		if (TaskQueue.remove(queue)) {
+			LOG.info("Remove has sucess,number of tasks available[" + TaskQueue.getQueues().size() + "]");
+		}
+
 		return 2;
 	}
 

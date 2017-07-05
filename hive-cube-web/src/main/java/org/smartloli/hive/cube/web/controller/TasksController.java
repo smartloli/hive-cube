@@ -177,7 +177,7 @@ public class TasksController {
 			object.put("etime", task.getEndTime());
 			object.put("operate",
 					"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a href='/hc/tasks/executor/public/task/"
-							+ id + "/'>Run</a><li><a href='/hc/tasks/kill/public/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
+							+ id + "/'>Start</a><li><a href='/hc/tasks/kill/public/task/" + id + "/'>Stop</a><li><a name='operater_modal' href='#" + id
 							+ "'>Edit</a><li><a name='operater_modal_auto' href='#" + id + "'>Auto</a></ul></div>");
 			aaDatas.add(object);
 		}

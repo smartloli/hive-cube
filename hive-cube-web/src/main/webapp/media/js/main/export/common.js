@@ -3,54 +3,19 @@ $(document).ready(function() {
 	var formatter = new Array();
 	var formatterId = 0;
 	var hiveSubmitColumns = new Array();
+	var hiveSubmitColumnsAlias = new Array();
 	var hiveSubmitTableName = "";
 
-	$("[name='userid-upload-switch']").bootstrapSwitch('state', false);
-	$("[name='userid-log-switch']").bootstrapSwitch('state', true);
-	$("[name='userid-user-switch']").bootstrapSwitch('state', false);
-
-	$("[name='userid-upload-switch']").on('switchChange.bootstrapSwitch', function(event, state) {
-		if (state) {
-			$("#mf-btn-upload").show()
-		} else {
-			$("#mf-btn-upload").hide()
-		}
-	});
-
-	// hive table
-	$("[name='userid-log-switch']").on('switchChange.bootstrapSwitch', function(event, state) {
-		if (state) {
-			$("#mf_user_log_info").show()
-		} else {
-			$("#mf_user_log_info").hide()
-		}
-	});
-
-	// hbase user info
-	$("[name='userid-user-switch']").on('switchChange.bootstrapSwitch', function(event, state) {
-		if (state) {
-			$("#mf_user_user_info").show()
-			$("#hbase_user_info").show();
-		} else {
-			$("#mf_user_user_info").hide()
-			$("#hbase_user_info").hide();
-		}
-	});
-
-	$("#mf_upload_file").click(function() {
-		$('#batchImportModal').modal('show');
-	});
-
 	$("#select2val").select2({
-		placeholder : "选择数据表"
+		placeholder : "Select Hive Table"
 	});
 
 	$("#select2val_formatter").select2({
-		placeholder : "选择格式化字段"
+		placeholder : "Select Column Formatter"
 	});
 
 	$("#select2val_filter").select2({
-		placeholder : "选择过滤条件"
+		placeholder : "Select Filter"
 	});
 
 	$("#select2val_formatter_date").select2({
@@ -58,24 +23,11 @@ $(document).ready(function() {
 	});
 
 	$("#select2val_filter_condition").select2({
-		data : [ "等于(=)", "大于(>)", "大于等于(>=)", "小于(<)", "小于等于(<=)", "包含(in)", "匹配(like)" ]
-	});
-
-	var filter_hbases = new Array();
-	$(ucuser).each(function() {
-		filter_hbases.push(this.valueName + "(" + this.value + ")");
-	});
-
-	$("#select2val_filter_hbase").select2({
-		data : filter_hbases
-	});
-
-	$("#select2val_filter_condition_hbase").select2({
-		data : [ "等于(=)", "大于(>)", "大于等于(>=)", "小于(<)", "小于等于(<=)", "包含(in)", "匹配(like)" ]
+		data : [ "=", ">", ">=", "<", "<=", "in", "like", "between and" ]
 	});
 
 	// Set hive task name
-	$("#mf_hive_task_name").val("数据导出 | " + getNowFormatDate());
+	$("#hc_hive_task_name").val("Export Date | " + getNowFormatDate());
 
 	function getNowFormatDate() {
 		var date = new Date();
@@ -109,38 +61,28 @@ $(document).ready(function() {
 	var end = moment();
 
 	function cb(start, end) {
-		$('#reportrange span').html(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+		$('#reportrange span').html(start.format('YYYY-MM-DD') + ' To ' + end.format('YYYY-MM-DD'));
 	}
 
 	var reportrange = $('#reportrange').daterangepicker({
 		startDate : start,
 		endDate : end,
-		locale : {
-			applyLabel : '确定',
-			cancelLabel : '取消',
-			fromLabel : '起始时间',
-			toLabel : '结束时间',
-			customRangeLabel : '自定义',
-			daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
-			monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],
-			firstDay : 1
-		},
 		ranges : {
-			'今天' : [ moment(), moment() ],
-			'昨天' : [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
-			'最近7天' : [ moment().subtract(6, 'days'), moment() ],
-			'最近30' : [ moment().subtract(29, 'days'), moment() ],
-			'本月' : [ moment().startOf('month'), moment().endOf('month') ],
-			'上月' : [ moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month') ]
+			'Today' : [ moment(), moment() ],
+			'Yesterday' : [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
+			'Lastest 7 days' : [ moment().subtract(6, 'days'), moment() ],
+			'Lastest 30 days' : [ moment().subtract(29, 'days'), moment() ],
+			'This Month' : [ moment().startOf('month'), moment().endOf('month') ],
+			'Last Month' : [ moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month') ]
 		}
 	}, cb);
 
 	cb(start, end);
 
 	$("#select2val").select2({
-		placeholder : "数据表",
+		placeholder : "Hive Table",
 		ajax : {
-			url : "/mf/export/common/table/select/ajax",
+			url : "/hc/export/common/table/select/ajax",
 			dataType : 'json',
 			delay : 250,
 			data : function(params) {
@@ -182,7 +124,7 @@ $(document).ready(function() {
 		$.ajax({
 			type : 'get',
 			dataType : 'json',
-			url : '/mf/export/common/table/columns/' + tableName + '/ajax',
+			url : '/hc/export/common/table/columns/' + tableName + '/ajax',
 			success : function(datas) {
 				if (datas != null && datas.code == "success") {
 					$("#hiveColumns").show();
@@ -190,6 +132,7 @@ $(document).ready(function() {
 					$("#select2val_filter").html("");
 					$("#select2val_formatter").html("");
 					hiveSubmitColumns = [];
+					hiveSubmitColumnsAlias = [];
 					formatter = [];
 					var data = JSON.parse(datas.data);
 					var cbox = "";
@@ -229,9 +172,11 @@ $(document).ready(function() {
 		if ($(this).is(":checked")) {
 			formatter.push(formatterValue);
 			hiveSubmitColumns.push(extraHiveColumn($(this).val()));
+			hiveSubmitColumnsAlias.push(extraHiveColumnAlias($(this).val()));
 		} else {
 			removeByObject(formatter, $(this).val());
 			removeByValue(hiveSubmitColumns, extraHiveColumn($(this).val()));
+			removeByValue(hiveSubmitColumnsAlias, extraHiveColumnAlias($(this).val()));
 		}
 		formatterId++;
 
@@ -242,6 +187,10 @@ $(document).ready(function() {
 
 	function extraHiveColumn(extraStr) {
 		return extraStr.split("[")[1].split("]")[0];
+	}
+
+	function extraHiveColumnAlias(extraStr) {
+		return extraStr.split("[")[0];
 	}
 
 	function removeByObject(arr, val) {
@@ -262,9 +211,6 @@ $(document).ready(function() {
 		}
 	}
 
-	// load user info
-	loadUcuser();
-
 	$(document).on("click", "#hive_btn_submit_task", function() {
 		if (hiveSubmitColumns.length == 0 || hiveSubmitTableName == "") {
 			$("#alert_mssage_common").show();
@@ -276,17 +222,58 @@ $(document).ready(function() {
 			for (var i = 0; i < hiveSubmitColumns.length; i++) {
 				sql += "`" + hiveSubmitColumns[i] + "`,"
 			}
-			var stime = reportrange[0].innerText.replace(/-/g, '').split("至")[0].trim();
-			var etime = reportrange[0].innerText.replace(/-/g, '').split("至")[1].trim();
 			var hive_filter = new Array();
 			$("#hive_table_info_tag").find("span").each(function() {
 				hive_filter.push($(this).text());
 			})
-			sql = sql.substr(0, sql.length - 1) + " from " + hiveSubmitTableName + " where tm between " + stime + " and " + etime;
-			for (var i = 0; i < unique(hive_filter).length; i++) {
-				sql += " and " + unique(hive_filter)[i];
+			if (hive_filter.length > 0) {
+				sql = sql.substr(0, sql.length - 1) + " from " + hiveSubmitTableName + " where ";
+				for (var i = 0; i < unique(hive_filter).length; i++) {
+					if (i == 0) {
+						sql += unique(hive_filter)[i];
+					} else {
+						sql += " and " + unique(hive_filter)[i];
+					}
+				}
+				console.log(sql);
+				var columnAlias = "";
+				for (var i = 0; i < hiveSubmitColumnsAlias.length; i++) {
+					columnAlias += hiveSubmitColumnsAlias[i] + ","
+				}
+				var json = {
+					"column" : columnAlias.substr(0, columnAlias.length - 1),
+					"context" : [ {
+						"operate" : sql,
+						"type" : "hive",
+						"order" : 1
+					} ]
+				}
+				console.log(json)
+				var url = '/hc/export/custom/task/ajax?content=' + JSON.stringify(json) + '&name=' + $("#hc_hive_task_name").val();
+				$.ajax({
+					type : 'get',
+					dataType : 'json',
+					url : url,
+					success : function(datas) {
+						if (datas != null) {
+							console.log(datas);
+							$('#hc_task_alert_dialog').modal('show');
+							if (datas.code > 0) {
+								$("#hc_task_result_dialog").html("");
+								$("#hc_task_result_dialog").append("<span style='color:green'>The task was added successfully</span>. Please visit <a href='/hc/tasks/private'>Tasks</a> view current task details.");
+							} else {
+								$("#hc_task_result_dialog").html("");
+								$("#hc_task_result_dialog").append("<span style='color:red'>The task was added failed. Check to see if the writing task is up to specification.</span>");
+							}
+						}
+					}
+				});
+			} else {
+				$("#alert_mssage_common").show();
+				setTimeout(function() {
+					$("#alert_mssage_common").hide()
+				}, 3000);
 			}
-			console.log(sql);
 		}
 	});
 
@@ -294,9 +281,20 @@ $(document).ready(function() {
 		var key = $('#select2val_filter').select2('data')[0].text;
 		var condition = $('#select2val_filter_condition').select2('data')[0].text;
 		var value = $('#hive_table_input_filter').val();
-		if (value.length != 0) {
-			var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + parseen(condition) + " " + value) + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
-			$('#hive_table_info_tag').append(html);
+		if (value.length != 0 || condition.indexOf("between") > -1) {
+			if (condition.indexOf("between") > -1) {
+				var stime = reportrange[0].innerText.replace(/-/g, '').split("To")[0].trim();
+				var etime = reportrange[0].innerText.replace(/-/g, '').split("To")[1].trim();
+				var html = "<p><span class='label label-primary'>" + (parseen(key) + " between " + stime + " and " + etime) + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
+				$('#hive_table_info_tag').append(html);
+			} else {
+				if (condition.indexOf("in") > -1) {
+					var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + condition + " " + value) + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
+				} else {
+					var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + condition + " \"" + value + "\"") + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
+				}
+				$('#hive_table_info_tag').append(html);
+			}
 		}
 	});
 

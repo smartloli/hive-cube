@@ -48,7 +48,7 @@ public class CommonClientConfigs {
 		public static final int WAIT = 1000 * 3;
 		public static final int LISTEN = 1000 * 2;
 		public static final int TASK_VIP = 5;
-		public static final String NEW_TASK_NUMBER = "Numbers";
+		public static final String NEW_TASK_NUMBER = "New Tasks";
 		public static final String PERIOD = "period";
 	}
 
@@ -82,6 +82,7 @@ public class CommonClientConfigs {
 	/** Sql constant property. */
 	public interface Sql {
 		public final static String SELECT = "select";
+		public final static String LOG = "The url to track the job";
 	}
 
 	/** Role is equal admin. */

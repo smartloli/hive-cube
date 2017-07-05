@@ -49,7 +49,8 @@ public class Reporter {
 				download = domain + CommonClientConfigs.ASSERT_HC_EXPORT_CONFIG + File.separator + task.getDownload();
 			}
 			String reback = SystemConfig.getProperty("mf.reback.user");
-			mail.setContent("Hive Cube Notice:<" + task.getName() + "> has export, task id is [" + task.getId() + "]<br>Download :" + download + "<br>QA : " + reback);
+			mail.setContent(
+					"Hive Cube Notice: The task [" + task.getName() + "] has been exported , task id is [" + task.getId() + "]<br>Download :" + download + "<br>QA : " + reback);
 			mail.start();
 		}
 	}

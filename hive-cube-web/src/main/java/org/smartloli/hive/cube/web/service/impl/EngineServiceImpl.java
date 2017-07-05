@@ -32,6 +32,7 @@ import java.util.Map.Entry;
 import org.apache.hive.jdbc.HiveStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartloli.hive.cube.common.client.CommonClientConfigs;
 import org.smartloli.hive.cube.common.pojo.Task;
 import org.smartloli.hive.cube.common.pojo.TaskProcess;
 import org.smartloli.hive.cube.common.util.CSVUtils;
@@ -101,13 +102,15 @@ public class EngineServiceImpl implements EngineService {
 							TaskProcess taskProcess = new TaskProcess();
 							taskProcess.setTaskId(taskId);
 							taskProcess.setLog(message);
-							if (log.contains("The url to track the job")) {
+							if (log.contains(CommonClientConfigs.Sql.LOG)) {
 								applicationId = log.split("proxy")[1].split("/")[1];
 								taskProcess.setAppId(applicationId);
 							} else {
 								taskProcess.setAppId(applicationId);
 							}
-							processDao.updateTaskProcess(taskProcess);
+							if (applicationId.length() > 0) {
+								processDao.updateTaskProcess(taskProcess);
+							}
 						}
 						Thread.currentThread().sleep(500L);
 					} catch (Exception e) {
@@ -152,10 +155,10 @@ public class EngineServiceImpl implements EngineService {
 		try {
 			connection = hiveUtils.getConnect();
 			stmt = connection.createStatement();
-			HiveLogThread hiveLog = new HiveLogThread();
-			hiveLog.setTaskId(id);
-			hiveLog.setStmt(stmt);
-			hiveLog.start();
+//			HiveLogThread hiveLog = new HiveLogThread();
+//			hiveLog.setTaskId(id);
+//			hiveLog.setStmt(stmt);
+//			hiveLog.start();
 
 			rs = stmt.executeQuery(sql);
 			ResultSetMetaData rsmd = rs.getMetaData();

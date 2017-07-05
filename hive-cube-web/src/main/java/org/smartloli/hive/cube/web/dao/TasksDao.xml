@@ -122,7 +122,7 @@
 
 	<update id="modifyTaskContentByParams" parameterType="map">
 		update
-		mf_tasks
+		tasks
 		set content=#{content},`name`=#{name},email=#{email} where
 		`id`=#{id}
 	</update>
