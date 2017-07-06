@@ -39,14 +39,13 @@ public class HiveUtilsTest {
 
 	public static void main(String[] args) throws SQLException {
 		HiveUtils hive = new HiveUtils();
-		ResultSet rs = hive.executeQuery("show create table mtt_jbs_buy22");
+		ResultSet rs = hive.executeQuery("desc formatted ip_login");
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount();
 		while (rs.next()) {
 			Map<String, Object> map = new LinkedHashMap<String, Object>();
 			for (int i = 1; i <= columnCount; i++) {
-				if(rsmd.getColumnName(i).contains("# col_name")){
-					
+				if(rsmd.getColumnName(i).contains("Table Type")){
 				}
 				map.put(rsmd.getColumnName(i), rs.getString(i));
 			}

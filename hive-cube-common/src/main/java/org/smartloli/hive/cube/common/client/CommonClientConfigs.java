@@ -90,4 +90,29 @@ public class CommonClientConfigs {
 		public final static String ADMIN = "admin";
 	}
 
+	/** YarnState constant property. */
+	public interface YarnState {
+		public final static String RUNNING = "RUNNING";
+		public final static String SUCCEEDED = "SUCCEEDED";
+		public final static String KILLED = "KILLED";
+		public final static String FINISHED = "FINISHED";
+		public final static String FAILED = "FAILED";
+	}
+
+	/** Hadoop constant property. */
+	public interface Hadoop {
+		public final static String DFS_SUPPORT_APPEND = "dfs.support.append";
+		public final static String IO_FILE_BUFFER_SIZE = "io.file.buffer.size";
+		public final static String DFS_POLICY = "dfs.client.block.write.replace-datanode-on-failure.policy";
+		public final static String DFS_ENABLE = "dfs.client.block.write.replace-datanode-on-failure.enable";
+	}
+
+	/** Hdfs constant property. */
+	public interface HDFS {
+		public final static String WEB_HDFS = "/webhdfs/v1/%s?op=LISTSTATUS";
+		public final static String WEB_HDFS_OPEN = "/webhdfs/v1/%s?op=OPEN";
+		public final static String FILE = "FILE";
+		public final static String DIRECTORY = "DIRECTORY";
+	}
+
 }

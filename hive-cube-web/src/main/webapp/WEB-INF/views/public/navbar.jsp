@@ -161,7 +161,7 @@
 					class="fa fa-fw fa-caret-down"></i></a>
 				<ul id="demo3" class="collapse">
 					<li id="navbar_add"><a href="/hc/config/hive"><i
-							class="fa fa-h-square fa-fw"></i> Hive</a></li>
+							class="fa fa-cube fa-fw"></i> Hive</a></li>
 					<li id="navbar_add"><a href="/hc/config/hbase"><i
 							class="fa fa-h-square fa-fw"></i> HBase</a></li>
 				</ul></li>

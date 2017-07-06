@@ -19,6 +19,9 @@ package org.smartloli.hive.cube.common.util;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -32,6 +35,7 @@ import org.apache.hadoop.yarn.exceptions.YarnException;
 import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartloli.hive.cube.common.pojo.ApplicationContent;
 import org.smartloli.hive.cube.common.pojo.Task;
 
 /**
@@ -42,7 +46,7 @@ import org.smartloli.hive.cube.common.pojo.Task;
  *         Created by Sep 26, 2016
  */
 public class YarnManager {
-	
+
 	private final static Logger LOG = LoggerFactory.getLogger(YarnManager.class);
 	private final static Configuration conf = new Configuration();
 	static {
@@ -55,6 +59,97 @@ public class YarnManager {
 		} catch (Exception ex) {
 			LOG.error("Initialize yarn uri address has error,msg is " + ex.getMessage());
 		}
+	}
+
+	/** Checked application id whether exist. */
+	public static boolean exist(String appId) throws YarnException, IOException, InterruptedException, ClassNotFoundException {
+		YarnClient client = YarnClient.createYarnClient();
+		client.init(conf);
+		client.start();
+
+		EnumSet<YarnApplicationState> appStates = EnumSet.noneOf(YarnApplicationState.class);
+		if (appStates.isEmpty()) {
+			appStates.add(YarnApplicationState.RUNNING);
+			appStates.add(YarnApplicationState.FAILED);
+			appStates.add(YarnApplicationState.KILLED);
+			appStates.add(YarnApplicationState.FINISHED);
+		}
+		List<ApplicationReport> appsReport = client.getApplications(appStates);
+		for (ApplicationReport appReport : appsReport) {
+			if (appReport.getApplicationId().toString().equals(appId)) {
+				if (client != null) {
+					client.close();
+				}
+				return true;
+			}
+		}
+		if (client != null) {
+			client.close();
+		}
+
+		return false;
+	}
+	
+	/**Get application data by type.*/
+	public static List<ApplicationContent> getApplications(String type) throws YarnException, IOException, InterruptedException, ClassNotFoundException {
+		YarnClient client = YarnClient.createYarnClient();
+		client.init(conf);
+		client.start();
+
+		EnumSet<YarnApplicationState> appStates = EnumSet.noneOf(YarnApplicationState.class);
+		if (appStates.isEmpty()) {
+			if ("all".equals(type)) {
+				appStates.add(YarnApplicationState.RUNNING);
+				appStates.add(YarnApplicationState.FAILED);
+				appStates.add(YarnApplicationState.KILLED);
+				appStates.add(YarnApplicationState.FINISHED);
+			} else if ("killed".equals(type)) {
+				appStates.add(YarnApplicationState.KILLED);
+			} else if ("running".equals(type)) {
+				appStates.add(YarnApplicationState.RUNNING);
+			} else if ("finished".equals(type)) {
+				appStates.add(YarnApplicationState.FINISHED);
+			} else if ("failed".equals(type)) {
+				appStates.add(YarnApplicationState.FAILED);
+			}
+		}
+		List<ApplicationReport> appsReport = client.getApplications(appStates);
+		List<ApplicationContent> list = new ArrayList<ApplicationContent>();
+		for (ApplicationReport appReport : appsReport) {
+			ApplicationContent yarnState = new ApplicationContent();
+			yarnState.setAppId(appReport.getApplicationId().toString());
+			yarnState.setAppState(appReport.getYarnApplicationState().toString());
+			yarnState.setFinalAppStatus(appReport.getFinalApplicationStatus().toString());
+			yarnState.setFinishedTime(CalendarUtils.convertUnixTime(appReport.getFinishTime()));
+			yarnState.setName(appReport.getName());
+			DecimalFormat formatter = new DecimalFormat("###.##%");
+			yarnState.setProgress(formatter.format(appReport.getProgress()));
+			yarnState.setStartTime(CalendarUtils.convertUnixTime(appReport.getStartTime()));
+			yarnState.setType(appReport.getApplicationType());
+			yarnState.setUser(appReport.getUser());
+			list.add(yarnState);
+		}
+		if (client != null) {
+			client.close();
+		}
+
+		// Sort
+		Collections.sort(list, new Comparator<ApplicationContent>() {
+			public int compare(ApplicationContent arg0, ApplicationContent arg1) {
+				long hits0 = Long.parseLong(arg0.getAppId().split("_")[1]) + Long.parseLong(arg0.getAppId().split("_")[2]);
+				long hits1 = Long.parseLong(arg1.getAppId().split("_")[1]) + Long.parseLong(arg1.getAppId().split("_")[2]);
+
+				if (hits1 > hits0) {
+					return 1;
+				} else if (hits1 == hits0) {
+					return 0;
+				} else {
+					return -1;
+				}
+			}
+		});
+
+		return list;
 	}
 
 	/** Get hadoop task proccess by application id. */

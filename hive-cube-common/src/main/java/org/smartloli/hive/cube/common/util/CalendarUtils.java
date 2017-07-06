@@ -83,7 +83,7 @@ public class CalendarUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
 		return sdf.format(new Date(mill));
 	}
-
+	
 	/** Get the date of the day,accurate to seconds. */
 	public static String getDate() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
