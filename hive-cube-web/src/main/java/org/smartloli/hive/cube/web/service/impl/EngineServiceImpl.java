@@ -155,11 +155,12 @@ public class EngineServiceImpl implements EngineService {
 		try {
 			connection = hiveUtils.getConnect();
 			stmt = connection.createStatement();
-//			HiveLogThread hiveLog = new HiveLogThread();
-//			hiveLog.setTaskId(id);
-//			hiveLog.setStmt(stmt);
-//			hiveLog.start();
-
+			if (SystemConfig.getBooleanProperty("hive.cube.hive.log")) {
+				HiveLogThread hiveLog = new HiveLogThread();
+				hiveLog.setTaskId(id);
+				hiveLog.setStmt(stmt);
+				hiveLog.start();
+			}
 			rs = stmt.executeQuery(sql);
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnCount = rsmd.getColumnCount();

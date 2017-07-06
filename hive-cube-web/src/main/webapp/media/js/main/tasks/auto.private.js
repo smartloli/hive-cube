@@ -99,14 +99,14 @@ $(document).ready(function() {
 		var id = href.split("#")[1];
 		var tag = $(this).attr('tag');
 		if (tag == "delete") {
-			$('#hc_quartz_describer').find("span").html("<strong>确定要删除定时任务吗?</strong>");
+			$('#hc_quartz_describer').find("span").html("<strong>Are you sure you want to delete the quartz task?</strong>");
 			$('#hc_task_quartz').val("* * * * * ?");
 		} else if (tag == "modify") {
-			$('#hc_quartz_describer').find("span").html("<strong>格式: [秒] [分] [小时] [日] [月] [周] [年]</strong><br> 0 0 12 * * ? 每天12点触发<br> 0 15 10 ? * * 每天10点15分触发<br> 0 0/5 14 * * ? 每天14点到14点59分(整点开始,每隔5分触发)<br> 0 0-5 14 * * ? 每天14点到14点05分(每分触发)<br>");
+			$('#hc_quartz_describer').find("span").html("<strong>Formmat:[s] [m] [h] [d] [m] [w] [y]</strong><br> 0 0 12 * * ? It's triggered at 12:00 every day<br> 0 15 10 ? * * It's triggered at 10:15 every day<br> 0 0/5 14 * * ? From 14:00 to 14:59 every day (starting at 5 every minute)<br> 0 0-5 14 * * ? 14:00 to 14:05 every day (triggered by each minute)<br>");
 		} else if (tag == "stop") {
-			$('#hc_quartz_describer').find("span").html("<strong>确定要停止定时任务吗?</strong>");
+			$('#hc_quartz_describer').find("span").html("<strong>Are you sure you want to stop the quartz task?</strong>");
 		}else if(tag == "start"){
-			$('#hc_quartz_describer').find("span").html("<strong>确定要开始定时任务吗?</strong>");
+			$('#hc_quartz_describer').find("span").html("<strong>Are you sure you want to start the quartz task?</strong>");
 		}
 		$('#hc_task_auto_dialog').modal('show');
 		$.ajax({

@@ -83,7 +83,7 @@
 			<li id="navbar_dash"><a href="/hc"><i
 					class="fa fa-fw fa-dashboard"></i> Dashboard</a></li>
 			<li><a href="#" data-toggle="collapse" data-target="#demo"><i
-					class="fa fa-fw fa-database"></i> Export <i
+					class="fa fa-fw fa-cube"></i> Hive <i
 					class="fa fa-fw fa-caret-down"></i></a>
 				<ul id="demo" class="collapse">
 					<li id="navbar_list"><a href="/hc/export/common"><i
@@ -103,6 +103,45 @@
 							class="fa fa-users fa-fw"></i> Public</a></li>
 					<li id="navbar_zk"><a href="/hc/tasks/auto/public"><i
 							class="fa fa-history fa-fw"></i> All-Auto</a></li>
+				</ul></li>
+			<li><a href="#" data-toggle="collapse" data-target="#demo4"><i
+					class="fa fa-fw fa-eye"></i> Metrics <i
+					class="fa fa-fw fa-caret-down"></i></a>
+				<ul id="demo4" class="collapse">
+					<li id="navbar_cli"><a href="/hc/metrics/hdfs"><i
+							class="fa fa-file-text-o fa-fw"></i> HDFS</a></li>
+					<li id="navbar_cli"><a href="/hc/metrics/yarn"><i
+							class="fa fa-hacker-news fa-fw"></i> YARN</a></li>
+					<li id="navbar_zk"><a href="/hc/metrics/hadoop"><i
+							class="fa fa-sitemap fa-fw"></i> Hadoop</a></li>
+					<li id="navbar_zk"><a href="/hc/metrics/hbase"><i
+							class="fa fa-h-square fa-fw"></i> HBase</a></li>
+				</ul></li>
+			<li><a href="#" data-toggle="collapse" data-target="#demo6"><i
+					class="fa fa-fw fa-adn"></i> Applications <i
+					class="fa fa-fw fa-caret-down"></i></a>
+				<ul id="demo6" class="collapse">
+					<li id="navbar_list"><a href="/hc/applications/all"><i
+							class="fa fa-list fa-fw"></i> All</a></li>
+					<li id="navbar_list"><a href="/hc/applications/running"><i
+							class="fa fa-play fa-fw"></i> Running</a></li>
+					<li id="navbar_list"><a href="/hc/applications/finished"><i
+							class="fa fa-circle fa-fw"></i> Finished</a></li>
+					<li id="navbar_list"><a href="/hc/applications/failed"><i
+							class="fa fa-times-circle fa-fw"></i> Failed</a></li>
+					<li id="navbar_list"><a href="/hc/applications/killed"><i
+							class="fa fa-stop fa-fw"></i> Killed</a></li>
+				</ul></li>
+			<li><a href="#" data-toggle="collapse" data-target="#demo5"><i
+					class="fa fa-fw fa-database"></i> Storage <i
+					class="fa fa-fw fa-caret-down"></i></a>
+				<ul id="demo5" class="collapse">
+					<li id="navbar_list"><a href="/hc/storage/mysql"><i
+							class="fa fa-maxcdn fa-fw"></i> MySQL</a></li>
+					<li id="navbar_list"><a href="/hc/storage/redis"><i
+							class="fa fa-star fa-fw"></i> Redis</a></li>
+					<li id="navbar_list"><a href="/hc/storage/hbase"><i
+							class="fa fa-h-square fa-fw"></i> HBase</a></li>
 				</ul></li>
 			<li><a href="#" data-toggle="collapse" data-target="#demo1"><i
 					class="fa fa-fw fa-cog"></i> System <i
