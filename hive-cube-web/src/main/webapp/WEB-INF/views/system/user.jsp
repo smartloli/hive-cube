@@ -118,7 +118,7 @@
 								</div>
 								<div id="alert_mssage" style="display: none"
 									class="alert alert-danger">
-									<label> Oops! Please mahc some changes .</label>
+									<label> Oops! Please make some changes .</label>
 								</div>
 							</fieldset>
 

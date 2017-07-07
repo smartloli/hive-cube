@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.smartloli.hive.cube.web.dao.StorageDao">
+
+	<resultMap type="org.smartloli.hive.cube.common.pojo.OdpsContent"
+		id="odps">
+		<result property="id" column="id" />
+		<result property="host" column="host" />
+		<result property="port" column="port" />
+		<result property="type" column="type" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="modify" column="modify" />
+	</resultMap>
+
+	<select id="count" parameterType="map" resultType="int">
+		select
+		count(*)
+		from storage
+		<where>
+			<if test="type!='' and type!=null">
+				type=#{type}
+			</if>
+			<if test="search!='' and search!=null">
+				(host=#{search} or type=#{search})
+			</if>
+		</where>
+	</select>
+
+	<select id="exist" parameterType="int" resultType="int">
+		select
+		count(*) from storage where id=#{id}
+	</select>
+
+	<insert id="replace" parameterType="org.smartloli.hive.cube.common.pojo.OdpsContent">
+		replace into
+		storage(id,host,port,type,username,password)
+		value(#{id},#{host},#{port},#{type},#{username},#{password})
+	</insert>
+
+	<select id="get" parameterType="map" resultMap="odps">
+		select * from storage
+		<where>
+			<if test="type!='' and type!=null">
+				type=#{type}
+			</if>
+			<if test="search!='' and search!=null">
+				(host=#{search} or type=#{search})
+			</if>
+		</where>
+		order by modify desc
+		limit #{start},#{size}
+	</select>
+
+	<select id="findStorageById" parameterType="int" resultMap="odps">
+		select * from storage where id=#{id}
+	</select>
+
+	<delete id="delete" parameterType="int">
+		delete from storage where
+		id=#{id}
+	</delete>
+
+</mapper>
