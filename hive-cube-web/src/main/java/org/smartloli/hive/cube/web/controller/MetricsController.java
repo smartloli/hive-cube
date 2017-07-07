@@ -17,6 +17,7 @@
  */
 package org.smartloli.hive.cube.web.controller;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartloli.hive.cube.common.client.CommonClientConfigs.HDFS;
 import org.smartloli.hive.cube.web.service.HdfsService;
+import org.smartloli.hive.cube.web.service.MetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +58,17 @@ public class MetricsController {
 	@Autowired
 	private HdfsService hdfsService;
 
+	@Autowired
+	private MetricsService metricsService;
+
+	/** HBase viewer. */
+	@RequestMapping(value = "/hbase", method = RequestMethod.GET)
+	public ModelAndView hbaseView(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/metrics/hbase");
+		return mav;
+	}
+
 	/** Hdfs viewer. */
 	@RequestMapping(value = "/hdfs", method = RequestMethod.GET)
 	public ModelAndView hdfsView(HttpSession session) {
@@ -64,16 +77,33 @@ public class MetricsController {
 		return mav;
 	}
 
+	/** Hadoop viewer. */
+	@RequestMapping(value = "/hadoop", method = RequestMethod.GET)
+	public ModelAndView hadoop(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/metrics/hadoop");
+		return mav;
+	}
+
+	/** Yarn viewer. */
+	@RequestMapping(value = "/yarn", method = RequestMethod.GET)
+	public ModelAndView yarnView(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/metrics/yarn");
+		return mav;
+	}
+
+	/** Download file from hdfs. */
 	@RequestMapping("/hdfs/{fileName}/download")
 	public String download(@PathVariable("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) {
-		String path = fileName.replaceAll("________", "/");
+		String path = fileName.replaceAll(HDFS.UNDERLINE, File.separator);
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("multipart/form-data");
 		response.setHeader("Content-Disposition", "attachment;fileName=" + path.split("/")[path.split("/").length - 1]);
 		InputStream inputStream = null;
 		OutputStream os = null;
 		try {
-			inputStream = hdfsService.download("/" + path);
+			inputStream = hdfsService.download(File.separator + path);
 			os = response.getOutputStream();
 			byte[] b = new byte[2048];
 			int length;
@@ -97,6 +127,18 @@ public class MetricsController {
 		return null;
 	}
 
+	/** Get hbase region server data. */
+	@RequestMapping(value = "/hbase/region/server/ajax", method = RequestMethod.GET)
+	public void dashBoardAjax(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+		try {
+			byte[] output = metricsService.getHBaseRegionServer().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/** Get hdfs menu data. */
 	@RequestMapping(value = "/hdfs/{path}/ajax", method = RequestMethod.GET)
 	public void getHdfsDirAjax(HttpSession session, @PathVariable("path") String path, HttpServletResponse response, HttpServletRequest request) {
 		String aoData = request.getParameter("aoData");
@@ -116,7 +158,7 @@ public class MetricsController {
 			}
 		}
 
-		JSONArray dataSets = hdfsService.dir(path.equals("root") ? "" : path.replaceAll("________", "/") + "/");
+		JSONArray dataSets = hdfsService.dir(path.equals("root") ? "" : path.replaceAll(HDFS.UNDERLINE, File.separator) + File.separator);
 		int offset = 0;
 		JSONArray targets = new JSONArray();
 		for (Object object : dataSets) {
@@ -181,8 +223,9 @@ public class MetricsController {
 		}
 	}
 
+	/** Get hdfs file content. */
 	@RequestMapping(value = "/hdfs/context/{path}/ajax", method = RequestMethod.GET)
-	public void getHdfsContentAjax(@PathVariable("path") String path, HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+	public void getHdfsFileContentAjax(@PathVariable("path") String path, HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		try {
 			byte[] output = hdfsService.read(path).getBytes();
 			BaseController.response(output, response);
@@ -191,11 +234,46 @@ public class MetricsController {
 		}
 	}
 
-	@RequiresPermissions("/metrics/hdfs/del")
-	@RequestMapping(value = "/hdfs/{path}/del", method = RequestMethod.GET)
-	public ModelAndView hdfsDirDel(HttpSession session, @PathVariable("path") String path) {
-		hdfsService.delete("/" + path.replaceAll("________", "/"));
-		return new ModelAndView("redirect:/clients/hdfs");
+	/** Get hadoop nodes data. */
+	@RequestMapping(value = "/hadoop/nodes/info/ajax", method = RequestMethod.GET)
+	public void getHadoopNodesAjax(HttpServletResponse response, HttpServletRequest request) {
+		try {
+			byte[] output = metricsService.getHadoopNodes().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+		}
 	}
 
+	/** Get hadoop chart data. */
+	@RequestMapping(value = "/hadoop/chart/info/ajax", method = RequestMethod.GET)
+	public void getHadoopChartAjax(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+		try {
+			byte[] output = metricsService.getHadoopChart().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/** Get yarn resource data. */
+	@RequestMapping(value = "/yarn/metrics/ajax", method = RequestMethod.GET)
+	public void GetYarnResourceAjax(HttpServletResponse response, HttpServletRequest request) {
+		try {
+			byte[] output = metricsService.getYarnResource().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+		}
+	}
+
+	/** Delete file from hdfs. */
+	@RequiresPermissions("/metrics/hdfs/del")
+	@RequestMapping(value = "/hdfs/{path}/del", method = RequestMethod.GET)
+	public ModelAndView hdfsMenuOrFileDel(HttpSession session, @PathVariable("path") String path) {
+		hdfsService.delete(File.separator + path.replaceAll(HDFS.UNDERLINE, File.separator));
+		return new ModelAndView("redirect:/metrics/hdfs");
+	}
 }

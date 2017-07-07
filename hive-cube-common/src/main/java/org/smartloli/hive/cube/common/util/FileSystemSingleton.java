@@ -47,8 +47,8 @@ public class FileSystemSingleton {
 				conf.set(Hadoop.DFS_POLICY, "NEVER");
 				conf.set(Hadoop.DFS_ENABLE, "true");
 				String uri = SystemConfig.getProperty("hive.cube.hdfs.uri");
-				String owner = SystemConfig.getProperty("hive.cube.hadoop.owner");
-				fs = FileSystem.get(new URI(uri), conf, owner);
+				String user = SystemConfig.getProperty("hive.cube.hadoop.user");
+				fs = FileSystem.get(new URI(uri), conf, user);
 			} catch (Exception e) {
 				LOG.error("Create hadoop file system failure, msg is " + e.getMessage());
 			}
@@ -58,4 +58,5 @@ public class FileSystemSingleton {
 	public static FileSystem create() {
 		return FileSystemHolder.fs;
 	}
+
 }

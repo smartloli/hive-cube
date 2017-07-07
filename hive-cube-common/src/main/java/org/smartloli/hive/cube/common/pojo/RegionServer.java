@@ -15,31 +15,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartloli.hive.cube.web.service;
+/**
+ * 
+ */
+package org.smartloli.hive.cube.common.pojo;
 
-import java.io.InputStream;
-
-import com.alibaba.fastjson.JSONArray;
+import com.google.gson.Gson;
 
 /**
- * Hadoop hdfs menu service interface.
+ * RegionServer pojo.
  * 
  * @author smartloli.
  *
- *         Created by Jan 19, 2017
+ *         Created by Jul 7, 2017
  */
-public interface HdfsService {
+public class RegionServer {
+	private String regionName;
+	private String startTime;
+	private boolean isLive = false;
 
-	/** List hdfs menu interface. */
-	public JSONArray dir(String path);
+	public String getRegionName() {
+		return regionName;
+	}
 
-	/** Delete file or menu from hdfs interface. */
-	public void delete(String path);
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
+	}
 
-	/** Download file from hdfs interface. */
-	public InputStream download(String fileName);
+	public String getStartTime() {
+		return startTime;
+	}
 
-	/** Read content from hdfs interface. */
-	public String read(String path);
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public boolean isLive() {
+		return isLive;
+	}
+
+	public void setLive(boolean isLive) {
+		this.isLive = isLive;
+	}
+
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
+	}
 
 }

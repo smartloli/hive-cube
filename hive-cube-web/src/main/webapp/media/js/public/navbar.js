@@ -19,6 +19,9 @@ $(document).ready(function() {
 	}else if (ret.indexOf("/config") > -1) {
 		$("#demo3").addClass('collapse in');
 		$("#demo3").attr("aria-expanded", true);
+	}else if (ret.indexOf("/metrics") > -1) {
+		$("#demo4").addClass('collapse in');
+		$("#demo4").attr("aria-expanded", true);
 	}else if (ret.indexOf("/applications") > -1) {
 		$("#demo6").addClass('collapse in');
 		$("#demo6").attr("aria-expanded", true);

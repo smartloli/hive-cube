@@ -17,29 +17,25 @@
  */
 package org.smartloli.hive.cube.web.service;
 
-import java.io.InputStream;
-
-import com.alibaba.fastjson.JSONArray;
-
 /**
- * Hadoop hdfs menu service interface.
+ * Metrics hadoop node healthy and yarn resource used.
  * 
  * @author smartloli.
  *
- *         Created by Jan 19, 2017
+ *         Created by Jul 7, 2017
  */
-public interface HdfsService {
+public interface MetricsService {
 
-	/** List hdfs menu interface. */
-	public JSONArray dir(String path);
+	/** Get yarn resource interface. */
+	public String getYarnResource();
 
-	/** Delete file or menu from hdfs interface. */
-	public void delete(String path);
+	/** Get hadoop nodes interface. */
+	public String getHadoopNodes();
 
-	/** Download file from hdfs interface. */
-	public InputStream download(String fileName);
+	/** Get hadoop chart interface. */
+	public String getHadoopChart();
 
-	/** Read content from hdfs interface. */
-	public String read(String path);
+	/** Get hbase region server. */
+	public String getHBaseRegionServer();
 
 }

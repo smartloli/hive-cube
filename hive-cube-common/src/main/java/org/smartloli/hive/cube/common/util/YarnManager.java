@@ -28,6 +28,8 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
+import org.apache.hadoop.yarn.api.records.NodeReport;
+import org.apache.hadoop.yarn.api.records.NodeState;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.exceptions.ApplicationNotFoundException;
@@ -35,8 +37,11 @@ import org.apache.hadoop.yarn.exceptions.YarnException;
 import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartloli.hive.cube.common.client.CommonClientConfigs.YarnState;
 import org.smartloli.hive.cube.common.pojo.ApplicationContent;
 import org.smartloli.hive.cube.common.pojo.Task;
+import org.smartloli.hive.cube.common.pojo.YarnClusterMetrics;
+import org.smartloli.hive.cube.common.pojo.YarnNode;
 
 /**
  * Get the Hadoop resource management information, task details, interfaces.
@@ -89,8 +94,8 @@ public class YarnManager {
 
 		return false;
 	}
-	
-	/**Get application data by type.*/
+
+	/** Get application data by type. */
 	public static List<ApplicationContent> getApplications(String type) throws YarnException, IOException, InterruptedException, ClassNotFoundException {
 		YarnClient client = YarnClient.createYarnClient();
 		client.init(conf);
@@ -213,6 +218,82 @@ public class YarnManager {
 		if (client != null) {
 			client.close();
 		}
+	}
+
+	/** Get yarn cluster data. */
+	public static YarnClusterMetrics getYarnClusterMetrics() throws YarnException, IOException {
+		YarnClient client = YarnClient.createYarnClient();
+		client.init(conf);
+		client.start();
+		List<ApplicationReport> appsReport = client.getApplications();
+		long appsRunning = 0L;
+		for (ApplicationReport applicationReport : appsReport) {
+			if (YarnState.RUNNING.equals(applicationReport.getYarnApplicationState().toString())) {
+				appsRunning++;
+			}
+		}
+		YarnClusterMetrics yarnClusterMetrics = new YarnClusterMetrics();
+		yarnClusterMetrics.setAppsSubmitted(client.getApplications().size());
+		yarnClusterMetrics.setAppsRunning(appsRunning);
+		yarnClusterMetrics.setAppsCompleted(client.getApplications().size() - appsRunning);
+		List<YarnNode> yarnNodes = getYarnNodes();
+		for (YarnNode yarnNodeDomain : yarnNodes) {
+			if ("RUNNING".equals(yarnNodeDomain.getNodeState())) {
+				yarnClusterMetrics.setMemoryTotal(yarnClusterMetrics.getMemoryTotal() + yarnNodeDomain.getMemoryAvail());
+				yarnClusterMetrics.setMemoryUsed(yarnClusterMetrics.getMemoryUsed() + yarnNodeDomain.getMemoryUsed());
+				yarnClusterMetrics.setvCoresTotal(yarnClusterMetrics.getvCoresTotal() + yarnNodeDomain.getvCoresAvail());
+				yarnClusterMetrics.setvCoresUsed(yarnClusterMetrics.getvCoresUsed() + yarnNodeDomain.getvCoresUsed());
+				yarnClusterMetrics.setContainersRunning(yarnClusterMetrics.getContainersRunning() + yarnNodeDomain.getContainers());
+
+				yarnClusterMetrics.setActiveNodes(yarnClusterMetrics.getActiveNodes() + 1);
+			} else if ("UNHEALTHY".equals(yarnNodeDomain.getNodeState())) {
+				yarnClusterMetrics.setUnhealthyNodes(yarnClusterMetrics.getUnhealthyNodes() + 1);
+			} else if ("DECOMMISSIONED".equals(yarnNodeDomain.getNodeState())) {
+				yarnClusterMetrics.setDecommissionedNodes(yarnClusterMetrics.getDecommissionedNodes() + 1);
+			} else if ("LOST".equals(yarnNodeDomain.getNodeState())) {
+				yarnClusterMetrics.setLostNodes(yarnClusterMetrics.getLostNodes() + 1);
+			} else if ("REBOOTED".equals(yarnNodeDomain.getNodeState())) {
+				yarnClusterMetrics.setRebootedNodes(yarnClusterMetrics.getRebootedNodes() + 1);
+			}
+		}
+
+		if (client != null) {
+			client.close();
+		}
+
+		return yarnClusterMetrics;
+	}
+
+	/** Get yarn nodes data. */
+	public static List<YarnNode> getYarnNodes() throws YarnException, IOException {
+		YarnClient client = YarnClient.createYarnClient();
+		client.init(conf);
+		client.start();
+		NodeState[] nodeStates = new NodeState[]{NodeState.DECOMMISSIONED, NodeState.LOST, NodeState.REBOOTED, NodeState.RUNNING, NodeState.UNHEALTHY};
+
+		List<NodeReport> nodeReports = client.getNodeReports(nodeStates);
+		List<YarnNode> list = new ArrayList<YarnNode>();
+		for (NodeReport nodeReport : nodeReports) {
+			YarnNode yarnNode = new YarnNode();
+			yarnNode.setContainers(nodeReport.getNumContainers());
+			yarnNode.setHealthReport(nodeReport.getHealthReport());
+			yarnNode.setLastHealthUpdate(CalendarUtils.convertUnixTime(nodeReport.getLastHealthReportTime()));
+			yarnNode.setMemoryAvail(nodeReport.getCapability().getMemory());
+			yarnNode.setMemoryUsed(nodeReport.getUsed().getMemory());
+			yarnNode.setNodeAddress(nodeReport.getNodeId().getHost() + ":" + nodeReport.getNodeId().getPort());
+			yarnNode.setNodeHttpAddress(nodeReport.getHttpAddress());
+			yarnNode.setNodeState(nodeReport.getNodeState().toString());
+			yarnNode.setvCoresAvail(nodeReport.getCapability().getVirtualCores());
+			yarnNode.setvCoresUsed(nodeReport.getUsed().getVirtualCores());
+
+			list.add(yarnNode);
+		}
+
+		if (client != null) {
+			client.close();
+		}
+
+		return list;
 	}
 
 	/** Killed hadoop task by application id. */

@@ -17,8 +17,10 @@
  */
 package org.smartloli.hive.cube.common.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Convert the date or time to the specified format.
@@ -83,7 +85,7 @@ public class CalendarUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
 		return sdf.format(new Date(mill));
 	}
-	
+
 	/** Get the date of the day,accurate to seconds. */
 	public static String getDate() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -94,6 +96,21 @@ public class CalendarUtils {
 	public static String getCustomDate(String formatter) {
 		SimpleDateFormat df = new SimpleDateFormat(formatter);
 		return df.format(new Date());
+	}
+
+	/** Formatter local date to US. */
+	public static String formatLocale(String locale) throws ParseException {
+		SimpleDateFormat dfs = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+		String formatStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dfs.parse(locale));
+		return formatStr;
+	}
+
+	/** Formatter date to day. */
+	public static long formatDays(String date) throws ParseException {
+		long start = new Date().getTime();
+		SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long offset = start - dfs.parse(date).getTime();
+		return Math.round(offset * 1.0 / (1000 * 3600 * 24));
 	}
 
 }

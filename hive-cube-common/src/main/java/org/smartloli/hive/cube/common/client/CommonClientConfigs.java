@@ -113,6 +113,13 @@ public class CommonClientConfigs {
 		public final static String WEB_HDFS_OPEN = "/webhdfs/v1/%s?op=OPEN";
 		public final static String FILE = "FILE";
 		public final static String DIRECTORY = "DIRECTORY";
+		public final static String UNDERLINE = "________";
+		public final static String NAMENODE_JMX = "/jmx?qry=Hadoop:service=NameNode,name=NameNodeInfo";
+	}
+
+	public interface HBase {
+		public final static String HTTP = "http://";
+		public final static String HBASE_REGION_SERVER_JMX = "/jmx?qry=Hadoop:service=HBase,name=Master,sub=Server";
 	}
 
 }
