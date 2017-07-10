@@ -22,15 +22,23 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.smartloli.hive.cube.common.pojo.HBaseSchema;
 import org.smartloli.hive.cube.common.pojo.OdpsContent;
+import org.smartloli.hive.cube.plugins.hbase.HBaseRecordReader;
+import org.smartloli.hive.cube.plugins.hbase.HBaseScanSpec;
+import org.smartloli.hive.cube.plugins.hbase.HConstants;
+import org.smartloli.hive.cube.plugins.hbase.OdpsSqlParser;
 import org.smartloli.hive.cube.plugins.mysql.MySqlRecordReader;
 import org.smartloli.hive.cube.plugins.util.JConstants;
+import org.smartloli.hive.cube.web.controller.StartupListener;
 import org.smartloli.hive.cube.web.dao.StorageDao;
+import org.smartloli.hive.cube.web.exception.DataException;
 import org.smartloli.hive.cube.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * Manager storage plugins to mysql.
@@ -93,9 +101,38 @@ public class StorageServiceImpl implements StorageService {
 		return "";
 	}
 
+	/** Deal with hbase query. */
+	public JSONObject getSpecifyHBase(String jobId) {
+		if (HBaseRecordReader.result.containsKey(jobId)) {
+			return JSON.parseObject(HBaseRecordReader.result.get(jobId).toString());
+		}
+
+		return DataException.errorForQueryHBase(DataException.NO_FINISHED);
+	}
+
 	/** Add or modify storage plugins information. */
 	public int replace(OdpsContent odps) {
 		return storageDao.replace(odps);
+	}
+
+	/** Submit hbase query task. */
+	public boolean submitHBaseTask(String sql, String jobId) {
+		try {
+			HBaseScanSpec scanSpec = OdpsSqlParser.sqlParser(sql);
+			RowkeyServiceImpl rowkeyService = StartupListener.getBean("rowkeyServiceImpl", RowkeyServiceImpl.class);
+			JSONObject schema = rowkeyService.findHBaseSchemaByName(scanSpec.getTableName()).getJSONObject(HConstants.TABLE_SCHEMA);
+			HBaseSchema hSchema = new HBaseSchema();
+			hSchema.setSchema(schema);
+			hSchema.setSql(sql);
+			hSchema.setJobId(jobId);
+			HBaseRecordReader hRead = new HBaseRecordReader();
+			hRead.setHbaseSchema(hSchema);
+			hRead.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

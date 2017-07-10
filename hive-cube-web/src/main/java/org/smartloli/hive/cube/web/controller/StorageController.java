@@ -73,6 +73,14 @@ public class StorageController {
 		return mav;
 	}
 
+	/** HBase viewer. */
+	@RequestMapping(value = "/hbase", method = RequestMethod.GET)
+	public ModelAndView hbaseView(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/storage/hbase");
+		return mav;
+	}
+
 	/** Add or modify storage plugins information. */
 	@RequiresPermissions("/storage/plugin/add")
 	@RequestMapping(value = "/{type}/add/", method = RequestMethod.POST)
@@ -198,9 +206,72 @@ public class StorageController {
 		}
 	}
 
+	/** Submit hbase query task . */
+	@RequestMapping(value = "/specify/hbase/task/ajax", method = RequestMethod.GET)
+	public void getStorageHBaseSchemaAjax(HttpServletResponse response, HttpServletRequest request) {
+		try {
+			boolean status = storageService.submitHBaseTask(request.getParameter("sql"), request.getParameter("jobId"));
+			JSONObject object = new JSONObject();
+			object.put("msg", status);
+			byte[] output = object.toJSONString().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+		}
+
+	}
+
+	/** Get hbase query result by job id. */
+	@RequestMapping(value = "/hbase/query/result/{jobId}/", method = RequestMethod.GET)
+	public void getStorageHBaseDataAjax(@PathVariable("jobId") String jobId, HttpServletResponse response, HttpServletRequest request) {
+		String aoData = request.getParameter("aoData");
+		JSONArray params = JSON.parseArray(aoData);
+		int sEcho = 0, iDisplayStart = 0, iDisplayLength = 0;
+		for (Object object : params) {
+			JSONObject param = (JSONObject) object;
+			if ("sEcho".equals(param.getString("name"))) {
+				sEcho = param.getIntValue("value");
+			} else if ("iDisplayStart".equals(param.getString("name"))) {
+				iDisplayStart = param.getIntValue("value");
+			} else if ("iDisplayLength".equals(param.getString("name"))) {
+				iDisplayLength = param.getIntValue("value");
+			}
+		}
+
+		JSONArray results = storageService.getSpecifyHBase(jobId).getJSONArray("result");
+		JSONArray targets = new JSONArray();
+		int offset = 0;
+		if (results != null) {
+			for (Object object : results) {
+				JSONObject result = (JSONObject) object;
+				if (offset < (iDisplayLength + iDisplayStart) && offset >= iDisplayStart) {
+					JSONObject obj = new JSONObject();
+					for (String key : result.keySet()) {
+						obj.put(key, result.get(key));
+					}
+					targets.add(obj);
+				}
+				offset++;
+			}
+		}
+
+		JSONObject object = new JSONObject();
+		object.put("sEcho", sEcho);
+		object.put("iTotalRecords", results == null ? 0 : results.size());
+		object.put("iTotalDisplayRecords", results == null ? 0 : results.size());
+		object.put("aaData", targets);
+		try {
+			byte[] output = object.toJSONString().getBytes();
+			BaseController.response(output, response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	/** Get query mysql datasets. */
 	@RequestMapping(value = "/specify/{id}/{action}/query/ajax", method = RequestMethod.GET)
-	public void queryMySqlAjax(@PathVariable("id") int id, @PathVariable("action") String action,HttpServletResponse response, HttpServletRequest request) {
+	public void queryMySqlAjax(@PathVariable("id") int id, @PathVariable("action") String action, HttpServletResponse response, HttpServletRequest request) {
 		String aoData = request.getParameter("aoData");
 		JSONArray params = JSON.parseArray(aoData);
 		int sEcho = 0, iDisplayStart = 0, iDisplayLength = 0;

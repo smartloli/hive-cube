@@ -26,6 +26,7 @@ import org.smartloli.hive.cube.web.service.RowkeyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -67,6 +68,11 @@ public class RowkeyServiceImpl implements RowkeyService {
 		object.put("regular", rowKeyDao.findRowkeyByName(tname).getRegular());
 		object.put("tname", rowKeyDao.findRowkeyByName(tname).getTname());
 		return object.toJSONString();
+	}
+
+	@Override
+	public JSONObject findHBaseSchemaByName(String tname) {
+		return JSON.parseObject(rowKeyDao.findRowkeyByName(tname).getRegular());
 	}
 
 }

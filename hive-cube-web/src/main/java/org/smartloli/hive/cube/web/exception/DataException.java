@@ -15,31 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartloli.hive.cube.plugins.util;
+/**
+ * 
+ */
+package org.smartloli.hive.cube.web.exception;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
- * JDBC constants.
+ * Returns data exception information.
  * 
  * @author smartloli.
  *
- *         Created by Jul 7, 2017
+ *         Created by Jul 10, 2017
  */
-public interface JConstants {
+public class DataException {
 
-	/** Get databases. */
-	public static final String SHOW_DATABASES = "SHOW DATABASES";
+	/** Query has not finished. */
+	public static final String NO_FINISHED = "NO_FINISHED";
 
-	/** Constant property. */
-	public static final String DB = "db";
-	public static final String COLUMN = "column";
-	public static final String DATASETS = "datasets";
+	/** Get hbase query error. */
+	public static JSONObject errorForQueryHBase(String msg) {
+		JSONObject error = new JSONObject();
+		error.put("msg", msg);
+		return error;
+	}
 
-	/** MySql type. */
-	public static final String MYSQL = "mysql";
-
-	/** MySql driver name. */
-	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
-
-	/** HBase type. */
-	public static final String HBASE = "hbase";
 }

@@ -13,7 +13,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>MySql - Hive Cube</title>
+<title>HBase - Hive Cube</title>
 <jsp:include page="../public/css.jsp">
 	<jsp:param value="plugins/select2/select2.min.css" name="css" />
 </jsp:include>
@@ -34,7 +34,7 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						MySQL Database <small>Manager</small>
+						HBase <small>Shell</small>
 					</h1>
 				</div>
 				<!-- /.col-lg-12 -->
@@ -46,7 +46,7 @@
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
 						<i class="fa fa-info-circle"></i> <strong>Write the sql
-							statement to manipulate the MySql database .</strong>
+							statement to manipulate the HBase .</strong>
 					</div>
 				</div>
 			</div>
@@ -55,8 +55,7 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<select id="select2val" tabindex="-1"
-								style="width: 200px; font-family: 'Microsoft Yahei', 'HelveticaNeue', Helvetica, Arial, sans-serif; font-size: 1px;"></select>
+							<i class="fa fa-tasks"></i> HBase SQL
 							<div class="pull-right">
 								<a id="run_task" name="run_task" href="#"
 									class="btn btn-primary btn-xs"><i class="fa fa-play"></i>
@@ -81,7 +80,7 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-table"></i> MySQL Result Information
+							<i class="fa fa-table"></i> HBase Result Information
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
@@ -96,7 +95,7 @@
 	</div>
 </body>
 <jsp:include page="../public/script.jsp">
-	<jsp:param value="main/storage/mysqldb.js" name="loader" />
+	<jsp:param value="main/storage/hbase.js" name="loader" />
 	<jsp:param value="plugins/select2/select2.min.js" name="loader" />
 	<jsp:param value="plugins/codemirror/codemirror.js" name="loader" />
 	<jsp:param value="plugins/codemirror/sql.js" name="loader" />

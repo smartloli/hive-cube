@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.smartloli.hive.cube.common.pojo.Rowkey;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
 * Rowkey service interface.
 * 
@@ -36,6 +38,8 @@ public interface RowkeyService {
 	public int deleteRowkeyByName(String tname);
 
 	public String findRowkeyByName(String tname);
+	
+	public JSONObject findHBaseSchemaByName(String tname);
 
 	public List<Rowkey> getRowkeys(Map<String, Object> params);
 

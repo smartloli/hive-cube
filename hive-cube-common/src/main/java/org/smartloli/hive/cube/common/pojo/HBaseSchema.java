@@ -15,31 +15,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartloli.hive.cube.plugins.util;
+/**
+ * 
+ */
+package org.smartloli.hive.cube.common.pojo;
+
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 
 /**
- * JDBC constants.
+ * HBaseSchema pojo.
  * 
  * @author smartloli.
  *
- *         Created by Jul 7, 2017
+ *         Created by Jul 10, 2017
  */
-public interface JConstants {
+public class HBaseSchema {
 
-	/** Get databases. */
-	public static final String SHOW_DATABASES = "SHOW DATABASES";
+	private JSONObject schema;
+	private String sql;
+	private String jobId;
 
-	/** Constant property. */
-	public static final String DB = "db";
-	public static final String COLUMN = "column";
-	public static final String DATASETS = "datasets";
+	public String getJobId() {
+		return jobId;
+	}
 
-	/** MySql type. */
-	public static final String MYSQL = "mysql";
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
 
-	/** MySql driver name. */
-	public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+	public JSONObject getSchema() {
+		return schema;
+	}
 
-	/** HBase type. */
-	public static final String HBASE = "hbase";
+	public void setSchema(JSONObject schema) {
+		this.schema = schema;
+	}
+
+	public String getSql() {
+		return sql;
+	}
+
+	public void setSql(String sql) {
+		this.sql = sql;
+	}
+
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
+	}
+
 }
