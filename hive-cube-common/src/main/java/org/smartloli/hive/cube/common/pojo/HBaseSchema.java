@@ -34,15 +34,6 @@ public class HBaseSchema {
 
 	private JSONObject schema;
 	private String sql;
-	private String jobId;
-
-	public String getJobId() {
-		return jobId;
-	}
-
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
-	}
 
 	public JSONObject getSchema() {
 		return schema;

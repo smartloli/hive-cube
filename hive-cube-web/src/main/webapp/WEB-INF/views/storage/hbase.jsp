@@ -46,7 +46,9 @@
 						<button type="button" class="close" data-dismiss="alert"
 							aria-hidden="true">×</button>
 						<i class="fa fa-info-circle"></i> <strong>Write the sql
-							statement to manipulate the HBase .</strong>
+							statement to manipulate the HBase .</strong> Example SQL : select * from
+						"hbase_user" where "rowkey">'001040000002620' and
+						"rowkey"<'001040000002658'
 					</div>
 				</div>
 			</div>

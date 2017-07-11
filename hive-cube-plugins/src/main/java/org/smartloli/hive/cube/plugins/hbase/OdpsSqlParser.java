@@ -18,9 +18,13 @@
 package org.smartloli.hive.cube.plugins.hbase;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
@@ -50,6 +54,7 @@ public class OdpsSqlParser {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OdpsSqlParser.class);
 
+	/** Parser sql mapper hbase tree. */
 	public static HBaseScanSpec sqlParser(String sql) throws JsonParseException, JsonMappingException, IOException {
 		String dbType = JdbcConstants.HBASE;
 		String result = SQLUtils.format(sql, dbType);
@@ -86,6 +91,38 @@ public class OdpsSqlParser {
 		object.put("filterString", "");
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.readValue(object.toJSONString(), HBaseScanSpec.class);
+	}
+
+	private static String getMatchedString(String regex, String text) {
+		Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(text);
+		while (matcher.find()) {
+			return matcher.group(2);
+		}
+		return null;
+	}
+
+	/** Get sql schema. */
+	public static List<String> parseColumns(String sql) {
+		String columns = getMatchedString(HConstants.FIELD_REGEX, sql);
+		if (columns.replaceAll(HConstants.SPACE, "").equals(HConstants.STAR)) {
+			return Arrays.asList(HConstants.STAR);
+		} else {
+			List<String> fields = new ArrayList<>();
+			for (String column : columns.split(HConstants.COMMA)) {
+				if (column.toLowerCase().contains(HConstants.AS)) {
+					fields.add(column.split(HConstants.AS)[1].replaceAll(HConstants.SPACE, "").replaceAll(HConstants.QUOTES, ""));
+				} else {
+					if (column.toLowerCase().contains(HConstants.AVG) || column.toLowerCase().contains(HConstants.COUNT) || column.toLowerCase().contains(HConstants.SUM)
+							|| column.toLowerCase().contains(HConstants.MAX) || column.toLowerCase().contains(HConstants.MIN)) {
+						fields.add(HConstants.AGG_DEFAULT_FIELD);
+					} else {
+						fields.add(column.replaceAll(HConstants.SPACE, "").replaceAll(HConstants.QUOTES, ""));
+					}
+				}
+			}
+			return fields;
+		}
 	}
 
 }

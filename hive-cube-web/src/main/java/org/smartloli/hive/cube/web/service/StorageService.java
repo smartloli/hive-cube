@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.smartloli.hive.cube.common.pojo.OdpsContent;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 
 /**
  * StorageService interface.
@@ -50,16 +50,16 @@ public interface StorageService {
 	/** Get storage plugins data from mysql table. */
 	public List<OdpsContent> get(Map<String, Object> param);
 
+	/** Get hbase sql schema. */
+	public String getHBaseSchema(String sql);
+
 	/** Get diff storage dataset. */
 	public String getSpecifyById(int id, String action, HttpServletRequest request);
 
 	/** Deal with hbase query. */
-	public JSONObject getSpecifyHBase(String jobId);
+	public JSONArray getSpecifyHBase(String sql);
 
 	/** Add or modify storage plugins information. */
 	public int replace(OdpsContent odps);
-
-	/** Submit hbase task. */
-	public boolean submitHBaseTask(String sql, String jobId);
 
 }

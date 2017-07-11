@@ -59,4 +59,31 @@ public class HConstants {
 	/** SQL equal. */
 	public static final String EQUAL = "=";
 
+	/** SQL fields regex. */
+	public static final String FIELD_REGEX = "(select)(.+)(from)";
+
+	/** SQL column include star */
+	public static final String STAR = "*";
+
+	/** SQL column comma. */
+	public static final String COMMA = ",";
+
+	/** SQL as key. */
+	public static final String AS = "as";
+
+	/** SQL column space. */
+	public static final String SPACE = "\"";
+
+	/** SQL column quotes. */
+	public static final String QUOTES = " ";
+
+	/** SQL aggregate function. */
+	public static final String COUNT = "count";
+	public static final String SUM = "sum";
+	public static final String AVG = "avg";
+	public static final String MAX = "max";
+	public static final String MIN = "min";
+	/** Aggregate default field name. */
+	public static final String AGG_DEFAULT_FIELD = "EXPR$0";
+
 }

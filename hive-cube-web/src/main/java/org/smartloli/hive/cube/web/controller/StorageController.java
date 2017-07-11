@@ -206,14 +206,11 @@ public class StorageController {
 		}
 	}
 
-	/** Submit hbase query task . */
-	@RequestMapping(value = "/specify/hbase/task/ajax", method = RequestMethod.GET)
+	/** Get hbase sql schema . */
+	@RequestMapping(value = "/specify/hbase/schema/ajax", method = RequestMethod.GET)
 	public void getStorageHBaseSchemaAjax(HttpServletResponse response, HttpServletRequest request) {
 		try {
-			boolean status = storageService.submitHBaseTask(request.getParameter("sql"), request.getParameter("jobId"));
-			JSONObject object = new JSONObject();
-			object.put("msg", status);
-			byte[] output = object.toJSONString().getBytes();
+			byte[] output = storageService.getHBaseSchema(request.getParameter("sql")).getBytes();;
 			BaseController.response(output, response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -223,8 +220,8 @@ public class StorageController {
 	}
 
 	/** Get hbase query result by job id. */
-	@RequestMapping(value = "/hbase/query/result/{jobId}/", method = RequestMethod.GET)
-	public void getStorageHBaseDataAjax(@PathVariable("jobId") String jobId, HttpServletResponse response, HttpServletRequest request) {
+	@RequestMapping(value = "/hbase/query/result/ajax/", method = RequestMethod.GET)
+	public void getStorageHBaseDataAjax(HttpServletResponse response, HttpServletRequest request) {
 		String aoData = request.getParameter("aoData");
 		JSONArray params = JSON.parseArray(aoData);
 		int sEcho = 0, iDisplayStart = 0, iDisplayLength = 0;
@@ -239,7 +236,7 @@ public class StorageController {
 			}
 		}
 
-		JSONArray results = storageService.getSpecifyHBase(jobId).getJSONArray("result");
+		JSONArray results = storageService.getSpecifyHBase(request.getParameter("sql"));
 		JSONArray targets = new JSONArray();
 		int offset = 0;
 		if (results != null) {

@@ -32,12 +32,12 @@ import org.smartloli.hive.cube.plugins.mysql.MySqlRecordReader;
 import org.smartloli.hive.cube.plugins.util.JConstants;
 import org.smartloli.hive.cube.web.controller.StartupListener;
 import org.smartloli.hive.cube.web.dao.StorageDao;
-import org.smartloli.hive.cube.web.exception.DataException;
 import org.smartloli.hive.cube.web.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -78,6 +78,26 @@ public class StorageServiceImpl implements StorageService {
 		return storageDao.get(param);
 	}
 
+	/** Get hbase schema. */
+	public String getHBaseSchema(String sql) {
+		List<String> columns = OdpsSqlParser.parseColumns(sql);
+		JSONObject object = new JSONObject();
+		if (columns.contains(HConstants.STAR)) {
+			try {
+				HBaseScanSpec scanSpec = OdpsSqlParser.sqlParser(sql);
+				RowkeyServiceImpl rowkeyService = StartupListener.getBean("rowkeyServiceImpl", RowkeyServiceImpl.class);
+				JSONObject schema = rowkeyService.findHBaseSchemaByName(scanSpec.getTableName()).getJSONObject(HConstants.TABLE_SCHEMA);
+				object.put("columns", schema.keySet());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}else{
+			object.put("columns", columns);
+		}
+		return object.toJSONString();
+	}
+
 	/** Get diff storage dataset. */
 	public String getSpecifyById(int id, String action, HttpServletRequest request) {
 		OdpsContent odps = storageDao.findStorageById(id);
@@ -102,21 +122,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	/** Deal with hbase query. */
-	public JSONObject getSpecifyHBase(String jobId) {
-		if (HBaseRecordReader.result.containsKey(jobId)) {
-			return JSON.parseObject(HBaseRecordReader.result.get(jobId).toString());
-		}
-
-		return DataException.errorForQueryHBase(DataException.NO_FINISHED);
-	}
-
-	/** Add or modify storage plugins information. */
-	public int replace(OdpsContent odps) {
-		return storageDao.replace(odps);
-	}
-
-	/** Submit hbase query task. */
-	public boolean submitHBaseTask(String sql, String jobId) {
+	public JSONArray getSpecifyHBase(String sql) {
 		try {
 			HBaseScanSpec scanSpec = OdpsSqlParser.sqlParser(sql);
 			RowkeyServiceImpl rowkeyService = StartupListener.getBean("rowkeyServiceImpl", RowkeyServiceImpl.class);
@@ -124,15 +130,16 @@ public class StorageServiceImpl implements StorageService {
 			HBaseSchema hSchema = new HBaseSchema();
 			hSchema.setSchema(schema);
 			hSchema.setSql(sql);
-			hSchema.setJobId(jobId);
-			HBaseRecordReader hRead = new HBaseRecordReader();
-			hRead.setHbaseSchema(hSchema);
-			hRead.start();
+			return HBaseRecordReader.sql(hSchema);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return null;
+	}
+
+	/** Add or modify storage plugins information. */
+	public int replace(OdpsContent odps) {
+		return storageDao.replace(odps);
 	}
 
 }

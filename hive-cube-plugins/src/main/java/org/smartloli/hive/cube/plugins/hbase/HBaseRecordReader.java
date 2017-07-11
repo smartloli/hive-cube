@@ -17,9 +17,6 @@
  */
 package org.smartloli.hive.cube.plugins.hbase;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
@@ -44,25 +41,14 @@ import com.alibaba.fastjson.JSONObject;
  *
  *         Created by Jun 29, 2017
  */
-public class HBaseRecordReader extends Thread {
+public class HBaseRecordReader {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HBaseRecordReader.class);
 
-	public static Map<String, Object> result = new ConcurrentHashMap<>();
-	private HBaseSchema hbaseSchema;
-
-	public HBaseSchema getHbaseSchema() {
-		return hbaseSchema;
-	}
-
-	public void setHbaseSchema(HBaseSchema hbaseSchema) {
-		this.hbaseSchema = hbaseSchema;
-	}
-
 	// batch size should not exceed max allowed record count
-	private final int TARGET_RECORD_COUNT = 4000;
+	private static final int TARGET_RECORD_COUNT = 4000;
 
-	private JSONArray getBatch(HBaseScanSpec scanSpec) throws Exception {
+	private static JSONArray getBatch(HBaseScanSpec scanSpec) throws Exception {
 		HBaseStoragePlugin storagePlugin = new HBaseStoragePlugin();
 		Table table = storagePlugin.getConnection().getTable(TableName.valueOf(scanSpec.tableName));
 		Scan hbaseScan = new Scan(scanSpec.getStartRow(), scanSpec.getStopRow());
@@ -84,29 +70,21 @@ public class HBaseRecordReader extends Thread {
 		return datas;
 	}
 
-	private void closeScanner(ResultScanner scanner) {
+	private static void closeScanner(ResultScanner scanner) {
 		if (scanner != null)
 			scanner.close();
 	}
 
-	public JSONObject sql(HBaseSchema schema) {
+	public static JSONArray sql(HBaseSchema schema) {
 		try {
 			HBaseScanSpec scanSpec = OdpsSqlParser.sqlParser(schema.getSql());
 			JSONArray dataSets = getBatch(scanSpec);
-			JSONArray hbaseScanResult = JSON.parseArray(JSqlUtils.query(schema.getSchema(), scanSpec.getTableName(), dataSets, schema.getSql()));
-			JSONObject result = new JSONObject();
-			result.put("column", JSON.parseObject(hbaseScanResult.get(0).toString()).keySet());
-			result.put("result", hbaseScanResult);
-			return result;
+			return JSON.parseArray(JSqlUtils.query(schema.getSchema(), scanSpec.getTableName(), dataSets, schema.getSql()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Query hbase has error,msg is " + e.getMessage());
 		}
 		return null;
-	}
-
-	public void run() {
-		result.put(this.hbaseSchema.getJobId(), sql(this.hbaseSchema));
 	}
 
 }
