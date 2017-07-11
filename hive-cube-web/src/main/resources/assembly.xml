@@ -18,7 +18,7 @@
 			<directory>src/main/resources/conf/</directory>
 			<outputDirectory>/conf</outputDirectory>
 			<includes>
-				<include>*</include>
+				<include>*.properties</include>
 			</includes>
 		</fileSet>
 		<fileSet>
@@ -39,7 +39,7 @@
 			<directory>${project.basedir}/target</directory>
 			<outputDirectory>/kms/webapps</outputDirectory>
 			<includes>
-				<include>ke.war</include>
+				<include>hc.war</include>
 			</includes>
 		</fileSet>
 		<fileSet>

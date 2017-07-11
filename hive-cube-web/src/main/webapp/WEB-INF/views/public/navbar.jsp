@@ -138,10 +138,10 @@
 				<ul id="demo5" class="collapse">
 					<li id="navbar_list"><a href="/hc/storage/mysql"><i
 							class="fa fa-maxcdn fa-fw"></i> MySQL</a></li>
-					<li id="navbar_list"><a href="/hc/storage/redis"><i
-							class="fa fa-star fa-fw"></i> Redis</a></li>
 					<li id="navbar_list"><a href="/hc/storage/hbase"><i
 							class="fa fa-h-square fa-fw"></i> HBase</a></li>
+					<!-- <li id="navbar_list"><a href="/hc/storage/redis"><i
+							class="fa fa-star fa-fw"></i> Redis</a></li> -->
 				</ul></li>
 			<li><a href="#" data-toggle="collapse" data-target="#demo1"><i
 					class="fa fa-fw fa-cog"></i> System <i

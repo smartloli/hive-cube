@@ -3,14 +3,32 @@
 # source function library
 #. /etc/rc.d/init.d/functions
 
-DIALUP_PID=$KE_HOME/bin/ipc.pid
+COLOR_G="\x1b[0;32m"  # green
+COLOR_R="\x1b[1;31m"  # red
+RESET="\x1b[0m"
+STR_ERR="[Oops! Error occurred! Please see the message upside!]"
+STR_OK="[Job done!]"
+MSG_ERR=$COLOR_R$STR_ERR$RESET
+MSG_OK=$COLOR_G$STR_OK$RESET
+isexit()
+{
+	if [[ $1 -eq 0 ]];then
+		echo -e $MSG_OK
+	else
+		echo -e $MSG_ERR
+		exit 1
+	fi
+}
+
+DIALUP_PID=$HC_HOME/bin/hc.pid
+
 start()
 {
     echo -n $"Starting $prog: "
-    echo "Ke service check ..."
+    echo "hc service check ..."
     
-    if [ "$KE_HOME" = "" ]; then
-  		echo "Error: KE_HOME is not set."
+    if [ "$HC_HOME" = "" ]; then
+  		echo "Error: hc_HOME is not set."
   		exit 1
 	fi
 	
@@ -20,31 +38,61 @@ start()
 	fi
 
 	bin=`dirname "$0"`
-	export KE_HOME=`cd $bin/../; pwd`
+	export hc_HOME=`cd $bin/../; pwd`
 
-	KE_HOME_CONF_DIR=$KE_HOME/conf
-	CLASSPATH="${KE_HOME_CONF_DIR}"
+	HC_HOME_CONF_DIR=$HC_HOME/conf
+	CLASSPATH="${HC_HOME_CONF_DIR}"
+	
+	rm -rf $HC_HOME/kms/webapps/hc
+	rm -rf $HC_HOME/kms/work
+	mkdir -p $HC_HOME/kms/webapps/hc
+	cd $HC_HOME/kms/webapps/hc
+	${JAVA_HOME}/bin/jar -xvf $HC_HOME/kms/webapps/hc.war
 
-	for f in $KE_HOME/lib/*.jar; do
+	sleep 2
+	
+	for f in $HC_HOME/kms/webapps/hc/WEB-INF/lib/*.jar; do
   		CLASSPATH=${CLASSPATH}:$f;
 	done
 
-	LOG_DIR=${KE_HOME}/logs
+	LOG_DIR=${HC_HOME}/logs
 	
-	cd ${KE_HOME}
-	CLASS=org.smartloli.kafka.eagle.plugins.ipc.RpcServer
-	nohup ${JAVA_HOME}/bin/java -classpath "$CLASSPATH" $CLASS > ${LOG_DIR}/ipc.out 2>&1 < /dev/null & new_agent_pid=$!
-	echo "$new_agent_pid" > $DIALUP_PID
+	cd ${HC_HOME}
+	CLASS=org.smartloli.hive.cube.plugins.server.TomcatServerListen
+	${JAVA_HOME}/bin/java -classpath "$CLASSPATH" $CLASS > ${LOG_DIR}/hc.out 2>&1
+	echo "*******************************************************************"
+    echo "* Listen port has successed! *"
+	echo "*******************************************************************"
+	sleep 3
+	rm -rf ${HC_HOME}/kms/webapps/hc/WEB-INF/classes/*.properties
+	cp ${HC_HOME}/conf/*.properties ${HC_HOME}/kms/webapps/hc/WEB-INF/classes/
+	sleep 3
+	rm -rf ${HC_HOME}/kms/logs/*
+	chmod +x ${HC_HOME}/kms/bin/*.sh
+	nohup ${HC_HOME}/kms/bin/startup.sh > ${LOG_DIR}/hc.out 2>&1
+	ret=$?
+	echo "Status Code["$ret"]"
+	isexit $ret
+	echo "*******************************************************************"
+    	echo "* hive cube service has started success! *"
+    	echo "* Welcome, Now you can visit 'http://<your_host_or_ip>:port/hc' *"
+    	echo "* Account:admin ,Password:123456                          *"
+	echo "*******************************************************************"
+    	echo "* <Usage> hc.sh [start|status|stop|restart|stats] </Usage> *"
+	echo "*******************************************************************"
+	ps -ef | grep ${HC_HOME}/kms/bin/ | grep -v grep | awk '{print $2}' > $DIALUP_PID
+	rm -rf ${LOG_DIR}/hc_console.out
+	ln -s ${HC_HOME}/kms/logs/catalina.out ${LOG_DIR}/hc_console.out
 }
 
 stop()
 {
-	 if [ -f $KE_HOME/bin/ipc.pid ];then
-                    SPID=`cat $KE_HOME/bin/ipc.pid`
+	 if [ -f $HC_HOME/bin/hc.pid ];then
+	 				SPID=`cat $HC_HOME/bin/hc.pid`
 					  if [ "$SPID" != "" ];then
-                         ${KE_HOME}/kms/bin/shutdown.sh
+                         ${HC_HOME}/kms/bin/shutdown.sh
                          kill -9  $SPID
-						 echo  > $DIALUP_PID
+                         echo > $DIALUP_PID
 						 echo "stop success"
 					  fi
 	 fi
@@ -52,8 +100,8 @@ stop()
 
 stats()
 {
-	if [ -f $KE_HOME/bin/ipc.pid ];then
-                    SPID=`cat $KE_HOME/bin/ipc.pid`
+	if [ -f $HC_HOME/bin/hc.pid ];then
+                    SPID=`cat $HC_HOME/bin/hc.pid`
 					  if [ "$SPID" != "" ];then
 						echo "===================== TCP Connections Count  =========================="
 						netstat -natp|awk '{print $7}'|sort|uniq -c|sort -rn|grep $SPID
@@ -106,7 +154,7 @@ CheckProcessStata()
 
 status()
 {
-  SPID=`cat $KE_HOME/bin/ipc.pid`
+  SPID=`cat $HC_HOME/bin/hc.pid`
   CheckProcessStata $SPID >/dev/null
   if [ $? != 0 ];then
 	echo "unixdialup:{$SPID}  Stopped ...."

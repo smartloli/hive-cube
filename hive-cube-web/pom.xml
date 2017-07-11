@@ -204,7 +204,7 @@
 				<version>2.2</version>
 				<configuration>
 					<warName>hc</warName>
-					<packagingExcludes>WEB-INF/classes/plugins/**,WEB-INF/classes/kms/**,WEB-INF/classes/bash/**,WEB-INF/classes/assembly.xml</packagingExcludes>
+					<packagingExcludes>WEB-INF/classes/plugins/**,WEB-INF/classes/kms/**,WEB-INF/classes/bash/**,WEB-INF/classes/assembly.xml,WEB-INF/conf/**</packagingExcludes>
 				</configuration>
 			</plugin>
 
@@ -226,5 +226,24 @@
 				</executions>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<excludes>
+					<exclude>assembly.xml</exclude>
+					<exclude>conf/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 </project>
