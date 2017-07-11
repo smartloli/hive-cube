@@ -38,7 +38,7 @@ public class TomcatServerListen {
 		try {
 			String target = System.getProperty("user.dir") + "/kms/conf/server.xml";
 			String port = SystemConfig.getProperty("hive.cube.webui.port");
-			String docBase = SystemConfig.getProperty("hive.cube.doc.base");
+			String docBase = SystemConfig.getProperty("hive.cube.task.export.path");
 			if (!docBase.endsWith(File.separator)) {
 				docBase += File.separator;
 			}

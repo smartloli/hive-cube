@@ -11,7 +11,7 @@
 	language governing permissions and limitations under the License. -->
 <!-- Note: A "Server" is not itself a "Container", so you may not define 
 	subcomponents such as "Valves" at this level. Documentation at /docs/config/server.html -->
-<Server port="8065" shutdown="SHUTDOWN">
+<Server port="8055" shutdown="SHUTDOWN">
 	<Listener className="org.apache.catalina.startup.VersionLoggerListener" />
 	<!-- Security listener. Documentation at /docs/config/listeners.html <Listener 
 		className="org.apache.catalina.security.SecurityListener" /> -->
@@ -76,7 +76,7 @@
 			type="RSA" /> </SSLHostConfig> </Connector> -->
 
 		<!-- Define an AJP 1.3 Connector on port 8009 -->
-		<Connector port="8069" protocol="AJP/1.3" redirectPort="8443" />
+		<Connector port="8059" protocol="AJP/1.3" redirectPort="8443" />
 
 
 		<!-- An Engine represents the entry point (within Catalina) that processes 
