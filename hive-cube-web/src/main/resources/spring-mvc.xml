@@ -51,14 +51,6 @@
 		<property name="maxInMemorySize" value="40960" />
 	</bean>
 
-	<!-- i18n -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename">
-			<value>messages/message</value>
-		</property>
-	</bean>
-
 	<mvc:interceptors>
 		<bean id="localeChangeInterceptor"
 			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">

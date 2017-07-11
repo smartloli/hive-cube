@@ -28,7 +28,7 @@ start()
     echo "hc service check ..."
     
     if [ "$HC_HOME" = "" ]; then
-  		echo "Error: hc_HOME is not set."
+  		echo "Error: HC_HOME is not set."
   		exit 1
 	fi
 	

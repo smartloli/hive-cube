@@ -95,13 +95,11 @@
 									<div>
 										<form action="" method="post">
 											<div class="form-group">
-												<label class="control-label"><spring:message
-														code="export.common.task.name"></spring:message></label> <input
+												<label class="control-label">Name</label> <input
 													id="hc_hive_task_name" name="hc_hive_task_name" type="text"
 													class="form-control"
 													style="position: relative; width: 250px; top: -32px; left: 75px;">
-												<label class="control-label"><spring:message
-														code="export.custom.columns.name"></spring:message></label> <input
+												<label class="control-label">Columns</label> <input
 													id="hc_hive_column_name" name="hc_hive_column_name"
 													type="text" class="form-control"
 													placeholder="user_id,ip_counts,tm"

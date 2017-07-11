@@ -105,7 +105,7 @@ path.link {
 						<div class="modal-header">
 							<button class="close" type="button" data-dismiss="modal">×</button>
 							<h4 class="modal-title" id="hcModalLabel">
-								<spring:message code="system.resource.btn.home"></spring:message>
+								Parent
 							</h4>
 						</div>
 						<!-- /.row -->

@@ -107,7 +107,7 @@ public class TasksController {
 		} else {
 			return "redirect:/errors/500";
 		}
-	
+
 	}
 
 	/** Get public task data. */
@@ -352,8 +352,12 @@ public class TasksController {
 		String ref = request.getParameter("hc_task_ref");
 		JSONObject object = new JSONObject();
 		object.put("column", column);
-		object.put("context", JSON.parseArray(content.trim().replaceAll("\r\n", "")));
-	
+		try {
+			object.put("context", JSON.parseArray(content.trim().replaceAll("\r\n", "")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("name", name);
@@ -365,7 +369,7 @@ public class TasksController {
 		} else {
 			return "redirect:/errors/500";
 		}
-	
+
 	}
 
 }
