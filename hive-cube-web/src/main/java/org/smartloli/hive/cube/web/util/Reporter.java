@@ -56,7 +56,7 @@ public class Reporter {
 	}
 
 	/** Create user info. */
-	public static void userInfo(Signiner signin) {
+	public static void account(Signiner signin) {
 		MailUtils mail = new MailUtils();
 		mail.setAddress(signin.getEmail());
 		mail.setSubject("*** Password ***");

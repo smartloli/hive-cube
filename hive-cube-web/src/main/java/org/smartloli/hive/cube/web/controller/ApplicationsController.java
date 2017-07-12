@@ -67,7 +67,7 @@ public class ApplicationsController {
 
 	/** Running viewer. */
 	@RequestMapping(value = "/running", method = RequestMethod.GET)
-	public ModelAndView runningdView(HttpSession session) {
+	public ModelAndView runningView(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/applications/running");
 		return mav;
@@ -75,7 +75,7 @@ public class ApplicationsController {
 
 	/** Finished viewer. */
 	@RequestMapping(value = "/finished", method = RequestMethod.GET)
-	public ModelAndView finisheddView(HttpSession session) {
+	public ModelAndView finishedView(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/applications/finished");
 		return mav;
@@ -83,7 +83,7 @@ public class ApplicationsController {
 
 	/** Failed viewer. */
 	@RequestMapping(value = "/failed", method = RequestMethod.GET)
-	public ModelAndView faileddView(HttpSession session) {
+	public ModelAndView failedView(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/applications/failed");
 		return mav;
@@ -93,19 +93,19 @@ public class ApplicationsController {
 	@RequestMapping(value = "/yarn/{type}/ajax", method = RequestMethod.GET)
 	public void getApplicationAjax(HttpSession session, @PathVariable("type") String type, HttpServletResponse response, HttpServletRequest request) {
 		String aoData = request.getParameter("aoData");
-		JSONArray jsonArray = JSON.parseArray(aoData);
+		JSONArray params = JSON.parseArray(aoData);
 		int sEcho = 0, iDisplayStart = 0, iDisplayLength = 0;
 		String search = "";
-		for (Object obj : jsonArray) {
-			JSONObject jsonObj = (JSONObject) obj;
-			if ("sEcho".equals(jsonObj.getString("name"))) {
-				sEcho = jsonObj.getIntValue("value");
-			} else if ("iDisplayStart".equals(jsonObj.getString("name"))) {
-				iDisplayStart = jsonObj.getIntValue("value");
-			} else if ("iDisplayLength".equals(jsonObj.getString("name"))) {
-				iDisplayLength = jsonObj.getIntValue("value");
-			} else if ("sSearch".equals(jsonObj.getString("name"))) {
-				search = jsonObj.getString("value");
+		for (Object object : params) {
+			JSONObject param = (JSONObject) object;
+			if ("sEcho".equals(param.getString("name"))) {
+				sEcho = param.getIntValue("value");
+			} else if ("iDisplayStart".equals(param.getString("name"))) {
+				iDisplayStart = param.getIntValue("value");
+			} else if ("iDisplayLength".equals(param.getString("name"))) {
+				iDisplayLength = param.getIntValue("value");
+			} else if ("sSearch".equals(param.getString("name"))) {
+				search = param.getString("value");
 			}
 		}
 

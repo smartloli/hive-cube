@@ -93,9 +93,9 @@ public class DashboardServiceImpl implements DashboardService {
 			JSONObject object = new JSONObject();
 			String tm = "";
 			if (i < 10) {
-				tm = CalendarUtils.getCustomDate("yyyy-MM-dd") + " 0" + i + ":00";
+				tm = CalendarUtils.today("yyyy-MM-dd") + " 0" + i + ":00";
 			} else {
-				tm = CalendarUtils.getCustomDate("yyyy-MM-dd") + " " + i + ":00";
+				tm = CalendarUtils.today("yyyy-MM-dd") + " " + i + ":00";
 			}
 			object.put(CommonClientConfigs.Task.PERIOD, tm);
 			object.put(CommonClientConfigs.Task.NEW_TASK_NUMBER, 0);

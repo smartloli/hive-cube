@@ -51,7 +51,7 @@ public class DashboardController {
 
 	/** Get dashboard tasks content. */
 	@RequestMapping(value = "/dash/tasks/ajax", method = RequestMethod.GET)
-	public void dashboardAjax(HttpServletResponse response, HttpServletRequest request) {
+	public void getDashboardAjax(HttpServletResponse response, HttpServletRequest request) {
 		try {
 			byte[] output = dashboradService.getDashboard().getBytes();
 			BaseController.response(output, response);

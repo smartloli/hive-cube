@@ -275,14 +275,14 @@ public class ConfigController {
 
 	/** Sync hive all tables. */
 	@RequestMapping(value = "/hive/sync/all/", method = RequestMethod.GET)
-	public String syncHiveAllTable(HttpSession session, HttpServletRequest request) {
+	public String inSyncHiveAllTable(HttpSession session, HttpServletRequest request) {
 		hiveService.synchronizeAllTableFromHive();
 		return "redirect:/config/hive";
 	}
 
 	/** Sync hive one table. */
 	@RequestMapping(value = "/hive/sync/one/", method = RequestMethod.POST)
-	public String syncHiveOneTable(HttpSession session, HttpServletRequest request) {
+	public String inSyncHiveOneTable(HttpSession session, HttpServletRequest request) {
 		String tableName = request.getParameter("hc_name_hive_table");
 		String aliasName = request.getParameter("hc_alias_hive_table");
 		hiveService.synchronizeTableFromHiveByName(tableName, aliasName);

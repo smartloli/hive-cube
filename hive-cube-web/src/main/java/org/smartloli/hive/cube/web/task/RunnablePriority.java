@@ -111,12 +111,12 @@ public class RunnablePriority implements Runnable, Comparable<RunnablePriority> 
 				JSONObject tmp = object.getJSONObject("reback");
 				task.setDownload(tmp.getString("download"));
 				task.setStatus(CommonClientConfigs.TaskStatus.EXECUTION_END);
-				task.setEndTime(CalendarUtils.getDate());
+				task.setEndTime(CalendarUtils.today());
 				task.setFileSize(tmp.getLongValue("size"));
 			} else {
 				task.setLog(object.getString("error"));
 				task.setStatus(CommonClientConfigs.TaskStatus.EXECUTION_ERROR);
-				task.setEndTime(CalendarUtils.getDate());
+				task.setEndTime(CalendarUtils.today());
 			}
 		}
 		common(task);

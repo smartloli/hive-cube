@@ -40,7 +40,7 @@ public class TaskFactory {
 		List<Task> tasks = new ArrayList<>();
 		for (Queue queue : queues) {
 			if (queue.getRank() == 0) {
-				queue.getTask().setStartTime(CalendarUtils.getDate());
+				queue.getTask().setStartTime(CalendarUtils.today());
 			}
 			queue.getTask().setStatus(queue.getStatus());
 			tasks.add(queue.getTask());

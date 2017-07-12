@@ -108,7 +108,7 @@ public class TasksServiceImpl implements TasksService {
 			LOG.info("[" + task.getId() + "] task executing,no duplication of execution.");
 			return true;
 		} else {
-			task.setStartTime(CalendarUtils.getDate());
+			task.setStartTime(CalendarUtils.today());
 			task.setStatus(CommonClientConfigs.TaskStatus.EXECUTING);
 			task.setLog("");
 			task.setDownload("");
@@ -152,7 +152,7 @@ public class TasksServiceImpl implements TasksService {
 			LOG.info("[" + task.getId() + "] task executing or queue,no duplication of execution.");
 			return true;
 		} else {
-			task.setStartTime(CalendarUtils.getDate());
+			task.setStartTime(CalendarUtils.today());
 			task.setStatus(CommonClientConfigs.TaskStatus.EXECUTING);
 			task.setLog("");
 			task.setDownload("");
@@ -215,7 +215,7 @@ public class TasksServiceImpl implements TasksService {
 		}
 
 		Task task = tasksDao.findTaskById(id);
-		task.setEndTime(CalendarUtils.getDate());
+		task.setEndTime(CalendarUtils.today());
 		task.setStatus(CommonClientConfigs.TaskStatus.EXECUTION_STOP);
 		tasksDao.batchModifyTaskStatus(Arrays.asList(task));
 

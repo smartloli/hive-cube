@@ -43,7 +43,7 @@ import com.alibaba.fastjson.JSONObject;
 public class CSVUtils {
 
 	/** Create csv file . */
-	public static String createCSVFile(List exportData, LinkedHashMap map, String outPutPath, String fileName) {
+	public static String create(List exportData, LinkedHashMap map, String outPutPath, String fileName) {
 		File csvFile = null;
 		BufferedWriter csvFileOutputStream = null;
 		try {
@@ -85,10 +85,10 @@ public class CSVUtils {
 			}
 		}
 
-		return compressFile(csvFile.getAbsolutePath());
+		return compress(csvFile.getAbsolutePath());
 	}
 
-	private static String compressFile(String inFileName) {
+	private static String compress(String inFileName) {
 		String outFileName = inFileName + ".gz";
 		FileInputStream in = null;
 		try {

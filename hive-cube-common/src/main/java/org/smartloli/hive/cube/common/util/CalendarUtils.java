@@ -87,13 +87,13 @@ public class CalendarUtils {
 	}
 
 	/** Get the date of the day,accurate to seconds. */
-	public static String getDate() {
+	public static String today() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return df.format(new Date());
 	}
 
 	/** Get custom date,like yyyy/mm/dd etc. */
-	public static String getCustomDate(String formatter) {
+	public static String today(String formatter) {
 		SimpleDateFormat df = new SimpleDateFormat(formatter);
 		return df.format(new Date());
 	}
@@ -105,7 +105,7 @@ public class CalendarUtils {
 		return formatStr;
 	}
 
-	/** Formatter date to day. */
+	/** Formatter date to days. */
 	public static long formatDays(String date) throws ParseException {
 		long start = new Date().getTime();
 		SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

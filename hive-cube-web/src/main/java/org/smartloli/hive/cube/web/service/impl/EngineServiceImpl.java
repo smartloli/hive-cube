@@ -202,7 +202,7 @@ public class EngineServiceImpl implements EngineService {
 
 			// Modify task status to finished and generate download file.
 			String outPutPath = SystemConfig.getProperty("hive.cube.task.export.path");
-			reback = CSVUtils.createCSVFile(bodys, header, outPutPath, "task_id_" + id + "_");
+			reback = CSVUtils.create(bodys, header, outPutPath, "task_id_" + id + "_");
 		} catch (Exception ex) {
 			LOG.error("Exec SQL[" + sql + "] has error,msg is " + ex.getMessage());
 			error = ex.getMessage();

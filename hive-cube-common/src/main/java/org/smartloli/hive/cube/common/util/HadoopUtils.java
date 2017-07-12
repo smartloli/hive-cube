@@ -108,7 +108,7 @@ public class HadoopUtils {
 	}
 
 	/** Find file path from hdfs. */
-	public static boolean findPath(String remotePath) {
+	public static boolean find(String remotePath) {
 		Path path = new Path(remotePath);
 		try {
 			return fs.exists(path);

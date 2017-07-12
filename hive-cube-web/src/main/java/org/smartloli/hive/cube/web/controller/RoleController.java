@@ -106,7 +106,7 @@ public class RoleController {
 		signin.setRtxno(Integer.parseInt(rtxno));
 		signin.setUsername(username);
 		if (accountService.insertUser(signin) > 0) {
-			Reporter.userInfo(signin);
+			Reporter.account(signin);
 			return "redirect:/system/user";
 		} else {
 			return "redirect:/errors/500";

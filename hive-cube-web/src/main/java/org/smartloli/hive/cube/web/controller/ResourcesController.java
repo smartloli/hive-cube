@@ -106,7 +106,7 @@ public class ResourcesController {
 
 	/** Delete resource parent or children. */
 	@RequestMapping(value = "/resource/delete/parent/or/children/", method = RequestMethod.POST)
-	public String deleteParentOrChildren(HttpSession session, HttpServletRequest request) {
+	public String delParentOrChildren(HttpSession session, HttpServletRequest request) {
 		String res_child_root_id = request.getParameter("res_child_root_id");
 		String res_child_id = request.getParameter("res_child_id");
 		int resId = 0;

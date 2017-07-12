@@ -79,7 +79,7 @@ public class MetricsController {
 
 	/** Hadoop viewer. */
 	@RequestMapping(value = "/hadoop", method = RequestMethod.GET)
-	public ModelAndView hadoop(HttpSession session) {
+	public ModelAndView hadoopView(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/metrics/hadoop");
 		return mav;
@@ -129,7 +129,7 @@ public class MetricsController {
 
 	/** Get hbase region server data. */
 	@RequestMapping(value = "/hbase/region/server/ajax", method = RequestMethod.GET)
-	public void dashBoardAjax(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+	public void getHBaseServerAjax(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		try {
 			byte[] output = metricsService.getHBaseRegionServer().getBytes();
 			BaseController.response(output, response);
@@ -259,7 +259,7 @@ public class MetricsController {
 
 	/** Get yarn resource data. */
 	@RequestMapping(value = "/yarn/metrics/ajax", method = RequestMethod.GET)
-	public void GetYarnResourceAjax(HttpServletResponse response, HttpServletRequest request) {
+	public void getYarnResourceAjax(HttpServletResponse response, HttpServletRequest request) {
 		try {
 			byte[] output = metricsService.getYarnResource().getBytes();
 			BaseController.response(output, response);
