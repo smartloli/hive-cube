@@ -1,12 +1,12 @@
 # Hive Cube
 
-This is an monitor system and monitor your kafka clusters, and visual consumer thread,offsets,owners etc.
+This is a data export platform based on hive. At the same time, it also integrates the functions of Hadoop cluster resource monitoring management, as well as the query function of MySQL, HBase and other storage media.
 
-When you install [Kafka Eagle](http://download.smartloli.org/), you can see the current consumer group,for each group the topics that they are consuming and the offsets, lag, logsize position of the group in each topic. This is useful to understand how fast you are consuming from a message queue and how quick the message queue is increase. This will help you debuging kafka producers and consumers or just to have an idea of what is going on in your system.
+When you install [Hive Cube](http://download.smartloli.org/), you can write hive SQL in accordance with your business logic, and submit tasks to Hadoop cluster computing, and you can export the results of calculations. At the same time, we can monitor and manage the resources consumed by the task in the process of operation. In addition, you can modify, delete, or set the task to be a scheduled task. This helps facilitate the export of the data we need. At the same time, it also allows us to view the health status of the cluster and the consumption of resources at any time.
 
-The system shows the trend of consumer and producer trends on the same day, so you can see what happened that day.
+The system can use SQL to filter data from HBase quickly through rowkey conditional filtering to get the data we want.
 
-Here are a few Kafka Eagle system screenshots:
+Here are a few Hive Cube system screenshots:
 
 # List of Consumer Groups & Active Group Graph
 ![Consumer & Active Graph](https://ke.smartloli.org/res/consumer@2x.png)
