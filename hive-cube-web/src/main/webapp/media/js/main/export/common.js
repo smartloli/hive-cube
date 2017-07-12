@@ -291,7 +291,7 @@ $(document).ready(function() {
 				if (condition.indexOf("in") > -1) {
 					var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + condition + " " + value) + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
 				} else {
-					var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + condition + " \"" + value + "\"") + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
+					var html = "<p><span class='label label-primary'>" + (parseen(key) + " " + condition + " '" + value + "'") + "<span class='glyphicon glyphicon-remove' onclick='labelClose(this)'></span></span></p>"
 				}
 				$('#hive_table_info_tag').append(html);
 			}

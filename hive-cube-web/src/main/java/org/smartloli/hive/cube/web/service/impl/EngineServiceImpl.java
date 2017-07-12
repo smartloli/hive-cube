@@ -122,16 +122,7 @@ public class EngineServiceImpl implements EngineService {
 				e.printStackTrace();
 				update(e.getMessage());
 				return;
-			} finally {
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-					stmt = null;
-				}
-			}
+			} 
 		}
 
 		public void update(String message) {
