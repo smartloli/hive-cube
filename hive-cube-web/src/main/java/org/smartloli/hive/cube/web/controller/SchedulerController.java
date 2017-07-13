@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.smartloli.hive.cube.common.client.CommonClientConfigs;
+import org.smartloli.hive.cube.common.client.CommonClientConfigs.TaskStatus;
 import org.smartloli.hive.cube.common.pojo.Scheduler;
 import org.smartloli.hive.cube.common.pojo.Signiner;
 import org.smartloli.hive.cube.common.pojo.Task;
@@ -124,17 +125,20 @@ public class SchedulerController {
 			object.put("id", id);
 			object.put("name", task.getName());
 			object.put("owner", task.getOwner());
-			if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTING)) {
+			if (task.getStatus().equals(TaskStatus.EXECUTING)) {
 				object.put("status", "<a class='btn btn-primary btn-xs'>" + task.getStatus() + "...</a>");
-			} else if (task.getStatus().contains(CommonClientConfigs.TaskStatus.QUEUE)) {
+			} else if (task.getStatus().contains(TaskStatus.QUEUE)) {
 				object.put("status", "<a class='btn btn-warning btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_END)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_END)) {
 				object.put("status", "<a class='btn btn-success btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_ERROR)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_ERROR)) {
 				object.put("status", "<a class='btn btn-danger btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_STOP)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_STOP)) {
+				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_START)) {
 				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
 			}
+			
 			if (task.getLog() != "" && task.getLog() != null) {
 				object.put("log", "<a name='operate_task_log' href='#" + id + "'>Detail</a>");
 			} else {
@@ -145,6 +149,7 @@ public class SchedulerController {
 			} else {
 				object.put("result", "");
 			}
+			
 			try {
 				object.put("process", "<a name='operate_process_modal' href='#" + id + "'>" + task.getProcess() + "</a>");
 			} catch (Exception e) {
@@ -222,17 +227,20 @@ public class SchedulerController {
 			object.put("id", id);
 			object.put("name", task.getName());
 			object.put("owner", task.getOwner());
-			if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTING)) {
+			if (task.getStatus().equals(TaskStatus.EXECUTING)) {
 				object.put("status", "<a class='btn btn-primary btn-xs'>" + task.getStatus() + "...</a>");
-			} else if (task.getStatus().contains(CommonClientConfigs.TaskStatus.QUEUE)) {
+			} else if (task.getStatus().contains(TaskStatus.QUEUE)) {
 				object.put("status", "<a class='btn btn-warning btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_END)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_END)) {
 				object.put("status", "<a class='btn btn-success btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_ERROR)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_ERROR)) {
 				object.put("status", "<a class='btn btn-danger btn-xs'>" + task.getStatus() + "</a>");
-			} else if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_STOP)) {
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_STOP)) {
+				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_START)) {
 				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
 			}
+			
 			if (task.getLog() != "" && task.getLog() != null) {
 				object.put("log", "<a name='operate_task_log' href='#" + id + "'>Detail</a>");
 			} else {
@@ -243,6 +251,7 @@ public class SchedulerController {
 			} else {
 				object.put("result", "");
 			}
+			
 			try {
 				object.put("process", "<a name='operate_process_modal' href='#" + id + "'>" + task.getProcess() + "</a>");
 			} catch (Exception e) {
@@ -255,8 +264,8 @@ public class SchedulerController {
 			if (task.getStatus().equals(CommonClientConfigs.TaskStatus.EXECUTION_STOP)) {
 				object.put("operate",
 						"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a name='operater_modal_setting' tag='modify' href='#"
-								+ id + "'>Crontab</a></li><li><a name='operater_modal_setting' tag='start' href='#" + id + "'>Start</a></li><li><a name='operater_modal' href='#" + id
-								+ "'>Edit</a></li><li><a name='operater_modal_setting' tag='cancle' href='#" + id + "'>Cancle</a></li></ul></div>");
+								+ id + "'>Crontab</a></li><li><a name='operater_modal_setting' tag='start' href='#" + id + "'>Start</a></li><li><a name='operater_modal' href='#"
+								+ id + "'>Edit</a></li><li><a name='operater_modal_setting' tag='cancle' href='#" + id + "'>Cancle</a></li></ul></div>");
 			} else {
 				object.put("operate",
 						"<div class='btn-group'><button class='btn btn-primary btn-xs dropdown-toggle' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Action <span class='caret'></span></button><ul class='dropdown-menu dropdown-menu-right'><li><a name='operater_modal_setting' tag='modify' href='#"

@@ -57,7 +57,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 		int taskCode = taskDao.convertOrCancleAutoTask(map);
 		if (scheduleCode > 0 && taskCode > 0) {
 			if (scheduler.getType().equals(CommonClientConfigs.Scheduler.ADD) || scheduler.getType().equals(CommonClientConfigs.Scheduler.START)) {
-				QuartzManager.addJob(String.valueOf(scheduler.getTaskId()), ScheduleTask.class, scheduler.getCronExpression());
+				if (taskDao.startTaskById(scheduler.getTaskId()) > 0) {
+					QuartzManager.addJob(String.valueOf(scheduler.getTaskId()), ScheduleTask.class, scheduler.getCronExpression());
+				}
 			} else if (scheduler.getType().equals(CommonClientConfigs.Scheduler.MODIFY)) {
 				QuartzManager.modifyJobTime(String.valueOf(scheduler.getTaskId()), scheduler.getCronExpression());
 			} else if (scheduler.getType().equals(CommonClientConfigs.Scheduler.STOP)) {

@@ -140,6 +140,13 @@
 		`status`='Stop' where id=#{id}
 	</update>
 
+	<update id="startTaskById" parameterType="int">
+		update
+		tasks
+		set
+		`status`='Start' where id=#{id}
+	</update>
+
 	<delete id="deleteTaskById" parameterType="int">
 		delete from tasks
 		where id=#{id}

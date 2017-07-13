@@ -59,6 +59,7 @@ public class CommonClientConfigs {
 		public static final String QUEUE = "Queue";
 		public static final String EXECUTION_ERROR = "Error";
 		public static final String EXECUTION_END = "Finished";
+		public static final String EXECUTION_START = "Start";
 		public static final String EXECUTION_STOP = "Stop";
 	}
 

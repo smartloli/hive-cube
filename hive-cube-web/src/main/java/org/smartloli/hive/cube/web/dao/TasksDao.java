@@ -59,5 +59,7 @@ public interface TasksDao {
 	public int removeProcessById(int id);
 
 	public int stopTaskById(int id);
+	
+	public int startTaskById(int id);
 
 }

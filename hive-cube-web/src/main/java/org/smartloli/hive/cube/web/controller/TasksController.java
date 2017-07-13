@@ -155,6 +155,8 @@ public class TasksController {
 				object.put("status", "<a class='btn btn-danger btn-xs'>" + task.getStatus() + "</a>");
 			} else if (task.getStatus().equals(TaskStatus.EXECUTION_STOP)) {
 				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_START)) {
+				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
 			}
 			if (task.getLog() != "" && task.getLog() != null) {
 				object.put("log", "<a name='operate_task_log' href='#" + id + "'>Detail</a>");
@@ -246,6 +248,8 @@ public class TasksController {
 			} else if (task.getStatus().equals(TaskStatus.EXECUTION_ERROR)) {
 				object.put("status", "<a class='btn btn-danger btn-xs'>" + task.getStatus() + "</a>");
 			} else if (task.getStatus().equals(TaskStatus.EXECUTION_STOP)) {
+				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
+			} else if (task.getStatus().equals(TaskStatus.EXECUTION_START)) {
 				object.put("status", "<a class='btn btn-info btn-xs'>" + task.getStatus() + "</a>");
 			}
 			if (task.getLog() != "" && task.getLog() != null) {
