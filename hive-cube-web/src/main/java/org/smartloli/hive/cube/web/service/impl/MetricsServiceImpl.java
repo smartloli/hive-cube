@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.smartloli.hive.cube.common.pojo.NameNode;
 import org.smartloli.hive.cube.common.pojo.RegionServer;
 import org.smartloli.hive.cube.common.util.CalendarUtils;
-import org.smartloli.hive.cube.common.util.HBaseUtils;
-import org.smartloli.hive.cube.common.util.HadoopUtils;
 import org.smartloli.hive.cube.common.util.YarnManager;
+import org.smartloli.hive.cube.core.metrics.HadoopMetricsFactory;
+import org.smartloli.hive.cube.core.metrics.HadoopMetricsService;
 import org.smartloli.hive.cube.web.service.MetricsService;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +46,9 @@ public class MetricsServiceImpl implements MetricsService {
 
 	private Logger LOG = LoggerFactory.getLogger(MetricsServiceImpl.class);
 
+	/** Hadoop metrics method. */
+	private HadoopMetricsService hms = new HadoopMetricsFactory().create();
+	
 	/** Get yarn resource from application api. */
 	public String getYarnResource() {
 		JSONObject object = new JSONObject();
@@ -61,7 +64,7 @@ public class MetricsServiceImpl implements MetricsService {
 	/** Get hadoop nodes data. */
 	public String getHadoopNodes() {
 		JSONObject object = new JSONObject();
-		object.put("nodes", HadoopUtils.getDataNodes());
+		object.put("nodes", hms.datanodes());
 		return object.toJSONString();
 	}
 
@@ -69,7 +72,7 @@ public class MetricsServiceImpl implements MetricsService {
 	public String getHadoopChart() {
 		JSONObject object = new JSONObject();
 		DecimalFormat formatter = new DecimalFormat("###.##");
-		NameNode nn = HadoopUtils.getNameNodes();
+		NameNode nn = hms.namenodes();
 		object.put("version", nn.getVersion());
 		if (String.valueOf(nn.getCapacity()).length() > 10 && String.valueOf(nn.getCapacity()).length() < 13) {// GB
 			object.put("dfsUsed", formatter.format(nn.getDfsUsed() * 1.0 / (1024 * 1024 * 1024)));
@@ -108,7 +111,7 @@ public class MetricsServiceImpl implements MetricsService {
 	private Object regions() {
 		JSONObject object = new JSONObject();
 		object.put("name", "Active HBase");
-		List<RegionServer> regionServers = HBaseUtils.getRegionServers();
+		List<RegionServer> regionServers = hms.regionServers();
 		JSONArray targets = new JSONArray();
 		for (RegionServer region : regionServers) {
 			JSONObject target = new JSONObject();

@@ -238,7 +238,7 @@ public class YarnManager {
 		yarnClusterMetrics.setAppsCompleted(client.getApplications().size() - appsRunning);
 		List<YarnNode> yarnNodes = getYarnNodes();
 		for (YarnNode yarnNodeDomain : yarnNodes) {
-			if ("RUNNING".equals(yarnNodeDomain.getNodeState())) {
+			if (YarnState.RUNNING.equals(yarnNodeDomain.getNodeState())) {
 				yarnClusterMetrics.setMemoryTotal(yarnClusterMetrics.getMemoryTotal() + yarnNodeDomain.getMemoryAvail());
 				yarnClusterMetrics.setMemoryUsed(yarnClusterMetrics.getMemoryUsed() + yarnNodeDomain.getMemoryUsed());
 				yarnClusterMetrics.setvCoresTotal(yarnClusterMetrics.getvCoresTotal() + yarnNodeDomain.getvCoresAvail());
@@ -246,13 +246,13 @@ public class YarnManager {
 				yarnClusterMetrics.setContainersRunning(yarnClusterMetrics.getContainersRunning() + yarnNodeDomain.getContainers());
 
 				yarnClusterMetrics.setActiveNodes(yarnClusterMetrics.getActiveNodes() + 1);
-			} else if ("UNHEALTHY".equals(yarnNodeDomain.getNodeState())) {
+			} else if (YarnState.UNHEALTHY.equals(yarnNodeDomain.getNodeState())) {
 				yarnClusterMetrics.setUnhealthyNodes(yarnClusterMetrics.getUnhealthyNodes() + 1);
-			} else if ("DECOMMISSIONED".equals(yarnNodeDomain.getNodeState())) {
+			} else if (YarnState.DECOMMISSIONED.equals(yarnNodeDomain.getNodeState())) {
 				yarnClusterMetrics.setDecommissionedNodes(yarnClusterMetrics.getDecommissionedNodes() + 1);
-			} else if ("LOST".equals(yarnNodeDomain.getNodeState())) {
+			} else if (YarnState.LOST.equals(yarnNodeDomain.getNodeState())) {
 				yarnClusterMetrics.setLostNodes(yarnClusterMetrics.getLostNodes() + 1);
-			} else if ("REBOOTED".equals(yarnNodeDomain.getNodeState())) {
+			} else if (YarnState.REBOOTED.equals(yarnNodeDomain.getNodeState())) {
 				yarnClusterMetrics.setRebootedNodes(yarnClusterMetrics.getRebootedNodes() + 1);
 			}
 		}

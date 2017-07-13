@@ -97,6 +97,10 @@ public class CommonClientConfigs {
 		public final static String KILLED = "KILLED";
 		public final static String FINISHED = "FINISHED";
 		public final static String FAILED = "FAILED";
+		public final static String UNHEALTHY = "UNHEALTHY";
+		public final static String DECOMMISSIONED = "DECOMMISSIONED";
+		public final static String LOST = "LOST";
+		public final static String REBOOTED = "REBOOTED";
 	}
 
 	/** Hadoop constant property. */

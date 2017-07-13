@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartloli.hive.cube.common.client.CommonClientConfigs.HDFS;
 import org.smartloli.hive.cube.common.util.HadoopUtils;
+import org.smartloli.hive.cube.core.metrics.HadoopMetricsFactory;
+import org.smartloli.hive.cube.core.metrics.HadoopMetricsService;
 import org.smartloli.hive.cube.web.service.HdfsService;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +44,12 @@ import com.alibaba.fastjson.JSONObject;
 public class HdfsServiceImpl implements HdfsService {
 	private Logger LOG = LoggerFactory.getLogger(HdfsServiceImpl.class);
 
+	/** Hadoop metrics method. */
+	private HadoopMetricsService hms = new HadoopMetricsFactory().create();
+
 	/** List hdfs menu. */
 	public JSONArray dir(String path) {
-		return JSON.parseArray(HadoopUtils.hdfsDir(path).toString());
+		return JSON.parseArray(hms.browseDirectory(path).toString());
 	}
 
 	/** Delete hdfs menu or file. */
@@ -69,7 +74,7 @@ public class HdfsServiceImpl implements HdfsService {
 	/** Read data from hdfs. */
 	public String read(String path) {
 		JSONObject object = new JSONObject();
-		object.put("context", HadoopUtils.readHdfsContent(File.separator + path.replaceAll(HDFS.UNDERLINE, File.separator)));
+		object.put("context", HadoopUtils.hdfsFile(File.separator + path.replaceAll(HDFS.UNDERLINE, File.separator)));
 		object.put("open", "/hc/metrics/hdfs/" + path + "/download");
 		return object.toJSONString();
 	}
