@@ -8,26 +8,21 @@ The system can use SQL to filter data from HBase quickly through rowkey conditio
 
 Here are a few Hive Cube system screenshots:
 
-# List of Consumer Groups & Active Group Graph
-![Consumer & Active Graph](https://ke.smartloli.org/res/consumer@2x.png)
+# Hive Common Task
+![Common](https://hc.smartloli.org/res/hive_common@2x.png)
 
-# List of Topics Detail
-![Topics](https://ke.smartloli.org/res/list@2x.png)
+# Task Detail
+![Task](https://hc.smartloli.org/res/private_task@2x.png)
 
-# Consumer & Producer Rate Chart
-![Rate Chart](https://ke.smartloli.org/res/consumer_producer_rate@2x.png)
+# Metrics (YARN)
+![YARN](https://hc.smartloli.org/res/yarn@2x.png)
 
-# Kafka Offset Types
-
-Kafka is designed to be flexible on how the offsets are managed. Consumer can choose arbitrary storage and format to persist kafka offsets. Kafka Eagle currently support following popular storage format:
-  * Zookeeper. Old version of Kafka (0.8.2 before) default storage in Zookeeper.
-  * Kafka. New version of Kafka (0.10.0 in the future) default recommend storage in Kafka Topic(__consumer_offsets).
-  
-Each runtime instance of Kafka Eagle can only support a single type of storage format.
+# Application
+![Application](https://hc.smartloli.org/res/apps_all@2x.png)
 
 # Quickstart
 
-Please read [Hive Cube Install](https://ke.smartloli.org/2.Install/2.Installing.html) for setting up and running Hive Cube.
+Please read [Hive Cube Install](https://hc.smartloli.org/2.Install/2.Installing.html) for setting up and running Hive Cube.
 
 # Deploy
 
@@ -37,10 +32,10 @@ mvn clean && mvn package
 ```
 # More Information
 
-Please see the [Hive Cube Manual](https://ke.smartloli.org) for for more information including:
+Please see the [Hive Cube Manual](https://hc.smartloli.org) for for more information including:
   * System environment settings and installation instructions.
   * Information about how to use script command.
-  * Visual group,topic,offset metadata information etc.
+  * Visual task,cluster,system metadata information etc.
   * Metadata collection and log change information.
  
 # Contributing
