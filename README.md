@@ -2,7 +2,7 @@
 
 This is a data export platform based on hive. At the same time, it also integrates the functions of Hadoop cluster resource monitoring management, as well as the query function of MySQL, HBase and other storage media.
 
-When you install [Hive Cube](http://download.smartloli.org/), you can write hive SQL in accordance with your business logic, and submit tasks to Hadoop cluster computing, and you can export the results of calculations. At the same time, we can monitor and manage the resources consumed by the task in the process of operation. In addition, you can modify, delete, or set the task to be a scheduled task. This helps facilitate the export of the data we need. At the same time, it also allows us to view the health status of the cluster and the consumption of resources at any time.
+When you install [Hive Cube](https://hc.smartloli.org/2.Install/2.Installing.html), you can write hive SQL in accordance with your business logic, and submit tasks to Hadoop cluster computing, and you can export the results of calculations. At the same time, we can monitor and manage the resources consumed by the task in the process of operation. In addition, you can modify, delete, or set the task to be a scheduled task. This helps facilitate the export of the data we need. At the same time, it also allows us to view the health status of the cluster and the consumption of resources at any time.
 
 The system can use SQL to filter data from HBase quickly through rowkey conditional filtering to get the data we want.
 
