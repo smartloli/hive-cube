@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/smartloli/hive-cube.svg?branch=master)](https://travis-ci.org/smartloli/hive-cube)
+![](https://img.shields.io/badge/language-java-orange.svg)
+[![codebeat badge](https://codebeat.co/badges/b5fbd795-8668-4fa5-8b60-a150640bf891)](https://codebeat.co/projects/github-com-smartloli-hive-cube-master)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/smartloli/kafka-eagle/blob/master/LICENSE)
+
 # Hive Cube
 
 This is a data export platform based on hive. At the same time, it also integrates the functions of Hadoop cluster resource monitoring management, as well as the query function of MySQL, HBase and other storage media.
